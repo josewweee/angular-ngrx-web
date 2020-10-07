@@ -1,15 +1,20 @@
 <app-nav-bar></app-nav-bar>
 <div class="container">
-  <mat-card *ngFor="let pokemon of pokemonsName$ | async">
-    <mat-card-actions>
-      <button mat-icon-button color="warn">
-        <mat-icon>favorite</mat-icon>
-      </button>
-    </mat-card-actions>
-    <img
-      mat-card-image
-      src="https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/1.png"
-    />
-    <mat-card-footer>Bulbasur</mat-card-footer>
-  </mat-card>
+  <div class="card-container">
+    <mat-card
+      *ngFor="let pokemon of pokemonsName$ | async"
+      (click)="openPokemonModal(pokemon)"
+    >
+      <mat-card-actions>
+        <button mat-icon-button color="warn">
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </mat-card-actions>
+      <img
+        mat-card-image
+        src="https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/1.png"
+      />
+      <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
+    </mat-card>
+  </div>
 </div>

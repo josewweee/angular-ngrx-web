@@ -1,1 +1,55 @@
-<p>single-card-overview works!</p>
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ title }}</h2>
+  <mat-dialog-actions>
+    <button mat-icon-button color="warn">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button color="warn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-dialog-actions>
+</div>
+<mat-dialog-content>
+  <div class="dialog-body">
+    <div class="body-img">
+      <img
+        mat-card-image
+        src="https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/1.png"
+      />
+      <button class="body-img-btn" mat-raised-button>Compare to</button>
+    </div>
+    <div class="body-info">
+      <div class="info-text">
+        <p>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+        </p>
+      </div>
+      <div class="info-details">
+        <mat-grid-list cols="3" rowHeight="60px">
+          <mat-grid-tile [rowspan]="1">
+            <mat-grid-tile-header>Height</mat-grid-tile-header>
+            <span class="info-details-data"> 20m </span>
+          </mat-grid-tile>
+          <mat-grid-tile [rowspan]="1">
+            <mat-grid-tile-header>Weight</mat-grid-tile-header
+            ><span class="info-details-data"> 20m </span>
+          </mat-grid-tile>
+          <mat-grid-tile [rowspan]="1">
+            <mat-grid-tile-header>Gender</mat-grid-tile-header
+            ><span class="info-details-data"> 20m </span>
+          </mat-grid-tile>
+
+          <mat-grid-tile [rowspan]="1">
+            <mat-grid-tile-header>Abilities</mat-grid-tile-header
+            ><span class="info-details-data"> 20m </span>
+          </mat-grid-tile>
+          <mat-grid-tile [rowspan]="1">
+            <mat-grid-tile-header>Type</mat-grid-tile-header
+            ><span class="info-details-data">20m </span>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

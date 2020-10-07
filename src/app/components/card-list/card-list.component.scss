@@ -1,11 +1,19 @@
 .container {
-  padding: 1rem 8rem;
+  padding: 1rem 0;
+}
+
+.card-container {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
 }
 
 .mat-card {
   width: 150px;
   border: 2px solid #dedddd;
   box-shadow: none;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
 }
 
 .mat-card-actions {

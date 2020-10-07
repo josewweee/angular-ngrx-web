@@ -32,6 +32,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
+    MatGridListModule,
   ],
   providers: [PokemonsResolver, PokemonEntityService, PokemonDataService],
   bootstrap: [AppComponent],
