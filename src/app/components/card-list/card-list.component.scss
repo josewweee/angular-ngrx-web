@@ -1,0 +1,25 @@
+.container {
+  padding: 1rem 8rem;
+}
+
+.mat-card {
+  width: 150px;
+  border: 2px solid #dedddd;
+  box-shadow: none;
+}
+
+.mat-card-actions {
+  position: absolute;
+  right: 10%;
+  top: 0%;
+}
+
+.mat-card-footer {
+  display: block;
+  margin: 0 -16px -16px -16px;
+  background-color: whitesmoke;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.1rem;
+  border-top: 2px solid #dedddd;
+}

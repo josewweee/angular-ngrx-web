@@ -1,0 +1,20 @@
+<div class="full-page">
+  <h1 class="banner-title">Welcome to PokeApp</h1>
+  <h2 class="banner-subtitle">Favoritos</h2>
+  <carousel
+    class="carousel"
+    [loop]="true"
+    [autoplay]="true"
+    [autoplayInterval]="2000"
+    [pauseOnHover]="false"
+    [arrows]="false"
+    [images]="images"
+  >
+  </carousel>
+  <div class="nav-bar">
+    <ul class="nav-bar-list">
+      <li class="nav-bar-list-item active">PokeApp</li>
+      <li [routerLink]="['/home']" class="nav-bar-list-item">Pokemons</li>
+    </ul>
+  </div>
+</div>

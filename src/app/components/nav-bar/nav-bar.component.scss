@@ -1,0 +1,29 @@
+.nav-bar {
+  padding: 0 10px;
+  justify-content: space-between;
+}
+
+.nav-bar .nav-bar-list {
+  list-style: none;
+  display: flex;
+  padding-left: 1rem;
+}
+
+.nav-bar-list-item {
+  margin-right: 1rem;
+  font-weight: 400;
+}
+
+.active {
+  font-weight: 900;
+}
+
+.nav-bar-input {
+  height: 1.5rem;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+}
+
+.nav-bar-input:focus {
+  outline-color: #7fd5ff6b;
+}
