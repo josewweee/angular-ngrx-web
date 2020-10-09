@@ -1,0 +1,51 @@
+/* .mat-dialog {
+  height: 50vh;
+}
+
+.mat-grid-list {
+  height: 100%;
+} */
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+
+  .mat-dialog-actions {
+    padding: 0;
+    margin-bottom: 16px;
+
+    button {
+      top: 0;
+      margin-bottom: 100%;
+    }
+  }
+}
+
+.body-img {
+  .body-img-item {
+    max-width: 200px;
+
+    @media (max-width: 768px) {
+      max-width: 180px;
+    }
+    @media (max-width: 375px) {
+      max-width: 140px;
+    }
+  }
+}
+
+.info-details {
+  .mat-grid-tile .mat-grid-tile-header {
+    display: block;
+    text-align: center;
+    font-weight: 900;
+    color: black;
+    background: none;
+  }
+
+  .info-details-list {
+    list-style: none;
+    padding: 0;
+  }
+}

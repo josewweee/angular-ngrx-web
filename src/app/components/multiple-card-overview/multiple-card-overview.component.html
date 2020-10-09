@@ -1,1 +1,95 @@
-<p>multiple-card-overview works!</p>
+<div class="mat-dialog">
+  <!-- header -->
+  <!-- <mat-grid-list cols="1" rowHeight="1:1"> -->
+  <!-- <mat-grid-tile> -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>{{ title1 }} VS {{ title2 }}</h2>
+
+    <mat-dialog-actions>
+      <button mat-icon-button color="warn" (click)="onClose(null)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-dialog-actions>
+  </div>
+  <!-- </mat-grid-tile> -->
+
+  <!-- <mat-grid-tile> -->
+  <!-- <mat-dialog-content> -->
+  <!-- body -->
+  <div class="dialog-body">
+    <!-- imgs -->
+    <div class="body-img">
+      <mat-grid-list cols="2" rowHeight="236px">
+        <mat-grid-tile [rowspan]="1">
+          <img mat-card-image class="body-img-item" src="{{ pokemonImage1 }}" />
+        </mat-grid-tile>
+        <mat-grid-tile [rowspan]="1">
+          <img mat-card-image class="body-img-item" src="{{ pokemonImage2 }}" />
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <!-- info -->
+    <div class="body-info">
+      <div class="info-details">
+        <mat-grid-list cols="3" rowHeight="25px" class="info-details-row-1">
+          <div *ngFor="let details of infoDetails">
+            <mat-grid-tile [rowspan]="1">
+              <span class="info-details-data"> {{ details.pokemon1 }}</span>
+            </mat-grid-tile>
+            <mat-grid-tile [rowspan]="1">
+              <mat-grid-tile-header>{{ details.stat }}</mat-grid-tile-header>
+            </mat-grid-tile>
+            <mat-grid-tile [rowspan]="1">
+              <span class="info-details-data">{{ details.pokemon2 }}</span>
+            </mat-grid-tile>
+          </div>
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="60px" class="info-details-row-2">
+          <mat-grid-tile [colspan]="1">
+            <span class="info-details-data">
+              <ul class="info-details-list">
+                <li
+                  class="info-details-list-item"
+                  *ngFor="let ability of pokemon1.abilities"
+                >
+                  {{ ability.ability.name }}
+                </li>
+              </ul>
+            </span>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <mat-grid-tile-header>Abilities</mat-grid-tile-header>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="1">
+            <span class="info-details-data">
+              <ul class="info-details-list">
+                <li
+                  class="info-details-list-item"
+                  *ngFor="let ability of pokemon1.abilities"
+                >
+                  {{ ability.ability.name }}
+                </li>
+              </ul>
+            </span>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+  <!-- </mat-dialog-content> -->
+  <!-- </mat-grid-tile> -->
+
+  <!-- <mat-grid-tile > -->
+  <!-- <mat-dialog-content> -->
+  <div class="dialog-footer">
+    <div
+      id="chartContainer"
+      class="chart"
+      style="width: 100%; height: {{ chartHeight }}"
+    ></div>
+  </div>
+  <!-- </mat-dialog-content> -->
+  <!-- </mat-grid-tile> -->
+  <!-- </mat-grid-list> -->
+</div>

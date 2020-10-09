@@ -18,7 +18,23 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
       )
       .pipe(
         tap((res) => console.log(res['results'])),
-        map((res) => res['results'])
+        map((res) => res['results']),
+        map((res: PokemonsPage[]) => {
+          res.map((item: PokemonsPage) => {
+            const lastSlashInUrl = item['url'].lastIndexOf('/');
+            const firstSlashInUrl = item['url'].indexOf(
+              '/',
+              lastSlashInUrl - 4
+            );
+            const pokemonId = item['url'].slice(
+              firstSlashInUrl + 1,
+              lastSlashInUrl
+            );
+            let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
+            item.photo = photo;
+          });
+          return res;
+        })
       );
   }
 
@@ -26,21 +42,18 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
     return this.http.get('https://pokeapi.co/api/v2/pokemon/').pipe(
       map((res) => res['results']),
       map((res: PokemonsPage[]) => {
-        res.map(async (item: PokemonsPage) => {
+        res.map((item: PokemonsPage) => {
           const lastSlashInUrl = item['url'].lastIndexOf('/');
           const firstSlashInUrl = item['url'].indexOf('/', lastSlashInUrl - 4);
           const pokemonId = item['url'].slice(
             firstSlashInUrl + 1,
             lastSlashInUrl
           );
-          let photo = await this.http.get(
-            `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`
-          );
+          let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
           item.photo = photo;
         });
         return res;
-      }),
-      tap((res) => console.log(res))
+      })
     );
   }
 }

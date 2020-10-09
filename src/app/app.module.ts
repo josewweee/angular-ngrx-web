@@ -1,3 +1,5 @@
+import { FetchedPokemonsDataService } from './services/fetched-pokemons/fetched-pokemons-data.service';
+import { FetchedPokemonsEntityService } from './services/fetched-pokemons/fetched-pokemons-entity.service';
 import { PokemonDataService } from './services/pokemon-data.service';
 import { PokemonEntityService } from './services/pokemon-entity.service';
 import { PokemonsResolver } from './ngrx/pokemons.resolver';
@@ -35,6 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,15 +68,27 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatButtonModule,
     MatDialogModule,
     MatGridListModule,
+    InfiniteScrollModule,
   ],
-  providers: [PokemonsResolver, PokemonEntityService, PokemonDataService],
+  providers: [
+    PokemonsResolver,
+    PokemonEntityService,
+    PokemonDataService,
+    FetchedPokemonsEntityService,
+    FetchedPokemonsDataService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(
     private entityDataService: EntityDataService,
-    private pokemonDataService: PokemonDataService
+    private pokemonDataService: PokemonDataService,
+    private fetchedPokemonsDataService: FetchedPokemonsDataService
   ) {
     entityDataService.registerService('Pokemons', pokemonDataService);
+    entityDataService.registerService(
+      'FetchedPokemons',
+      fetchedPokemonsDataService
+    );
   }
 }

@@ -1,7 +1,13 @@
+.mat-dialog {
+  height: 90vh;
+  overflow: hidden;
+}
+
 .dialog-header {
   display: flex;
   align-content: center;
   justify-content: space-between;
+  margin-top: -20px;
 
   .mat-dialog-title {
     margin: 16px 0;
@@ -13,6 +19,7 @@
 }
 .dialog-body {
   display: flex;
+  margin-bottom: 2rem;
 }
 
 .body-img {
@@ -23,6 +30,16 @@
     margin: auto;
     display: block;
   }
+
+  img {
+    max-width: 236px;
+    max-height: 236px;
+    display: block;
+  }
+
+  @media (min-width: 600px) {
+    width: 30%;
+  }
 }
 
 .body-img-btn {
@@ -30,22 +47,48 @@
   color: white;
 }
 
+.body-info {
+  width: 60%;
+
+  @media (min-width: 600px) {
+    width: 70%;
+  }
+}
+
 .info-details {
+  .mat-grid-tile {
+    overflow: visible;
+  }
+
   .mat-grid-tile .mat-grid-tile-header {
     display: block;
-    text-align: center;
+    text-align: start;
     font-weight: 900;
     color: black;
     background: none;
     position: absolute;
     left: 0;
     right: 0;
+    overflow: visible;
+    padding: 0;
   }
 
   .info-details-data {
     display: block;
     width: 100%;
-    text-align: center;
+    text-align: start;
     margin-top: 1rem;
+  }
+}
+
+.info-details-row-2 .mat-grid-tile .mat-grid-tile-header {
+  text-align: start;
+}
+
+.dialog-footer {
+  height: 100%;
+  .chart {
+    margin: auto;
+    max-width: 680px;
   }
 }

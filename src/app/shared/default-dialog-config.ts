@@ -5,7 +5,9 @@ export function defaultDialogConfig() {
 
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = true;
-  dialogConfig.width = '80vw';
+  dialogConfig.width = '500px';
+  dialogConfig.maxWidth = '90vw';
+  dialogConfig.height = '90vh';
 
   return dialogConfig;
 }
