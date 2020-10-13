@@ -1,17 +1,17 @@
 <app-nav-bar (Searching)="filterData($event)"></app-nav-bar>
 <div class="container">
   <div class="card-container">
-    <mat-card
-      *ngFor="let pokemon of pokemonsName$ | async"
-      (click)="openPokemonModal(pokemon)"
-    >
+    <mat-card *ngFor="let pokemon of pokemonsName$ | async">
       <mat-card-actions>
-        <button mat-icon-button color="warn">
-          <mat-icon>favorite</mat-icon>
+        <button mat-icon-button color="warn" (click)="addToFavorites(pokemon)">
+          <mat-icon *ngIf="!pokemon.isFavorite">favorite_border</mat-icon>
+          <mat-icon *ngIf="pokemon.isFavorite">favorite</mat-icon>
         </button>
       </mat-card-actions>
-      <img mat-card-image src="{{ pokemon.photo }}" />
-      <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
+      <div (click)="openPokemonModal(pokemon)">
+        <img mat-card-image src="{{ pokemon.photo }}" />
+        <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
+      </div>
     </mat-card>
   </div>
 </div>

@@ -51,6 +51,15 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
           );
           let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
           item.photo = photo;
+          if (
+            item.name == 'bulbasaur' ||
+            item.name == 'charmander' ||
+            item.name == 'squirtle'
+          ) {
+            item.isFavorite = true;
+          } else {
+            item.isFavorite = false;
+          }
         });
         return res;
       })

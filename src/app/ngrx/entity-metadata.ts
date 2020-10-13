@@ -6,6 +6,9 @@ export const entityMetadata: EntityMetadataMap = {
     selectId: getPokemonId,
   },
   FetchedPokemons: {},
+  FavoritePokemons: {
+    selectId: getPokemonId,
+  },
 };
 
 export function getPokemonId(pokemon: PokemonsPage): string {

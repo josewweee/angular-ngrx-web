@@ -8,6 +8,7 @@ export function defaultDialogConfig() {
   dialogConfig.width = '500px';
   dialogConfig.maxWidth = '90vw';
   dialogConfig.height = '90vh';
+  dialogConfig.panelClass = 'custom-dialog-panel';
 
   return dialogConfig;
 }

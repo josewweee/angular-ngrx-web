@@ -15,8 +15,6 @@ export class PokemonsResolver implements Resolve<boolean> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    console.log(`[resolver]`);
-
     return this.pokemonsFetchService.loaded$.pipe(
       tap((loaded) => {
         if (!loaded) {
@@ -26,16 +24,5 @@ export class PokemonsResolver implements Resolve<boolean> {
       filter((loaded) => !!loaded),
       first()
     );
-
-    /* return this.pokemonsFetchService
-      .getWithQuery({ limit: '20', id: '0' })
-      .pipe(
-        tap((data) => console.log(data)),
-        map((pokemons) => !!pokemons)
-      ); */
-
-    /*  return this.pokemonsFetchService
-      .getAll()
-      .pipe(map((pokemons) => !!pokemons)); */
   }
 }

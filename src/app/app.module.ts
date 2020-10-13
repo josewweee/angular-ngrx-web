@@ -1,3 +1,4 @@
+import { FavoriteEntityService } from './services/favorite-pokemons/favorite-entity.service';
 import { FetchedPokemonsDataService } from './services/fetched-pokemons/fetched-pokemons-data.service';
 import { FetchedPokemonsEntityService } from './services/fetched-pokemons/fetched-pokemons-entity.service';
 import { PokemonDataService } from './services/pokemon-data.service';
@@ -78,6 +79,7 @@ import { FormsModule } from '@angular/forms';
     PokemonDataService,
     FetchedPokemonsEntityService,
     FetchedPokemonsDataService,
+    FavoriteEntityService,
   ],
   bootstrap: [AppComponent],
 })
