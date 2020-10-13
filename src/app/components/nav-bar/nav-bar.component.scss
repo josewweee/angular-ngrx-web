@@ -1,6 +1,9 @@
 .nav-bar {
   padding: 0 10px;
   justify-content: space-between;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
 }
 
 .nav-bar .nav-bar-list {
@@ -18,12 +21,34 @@
   font-weight: 900;
 }
 
-.nav-bar-input {
-  height: 1.5rem;
+.search-container {
+  display: flex;
+  flex-direction: row;
   border: 1px solid #cecece;
   border-radius: 4px;
+  background: white;
+  height: 1.5rem;
+  padding: 1px;
+}
+
+.nav-bar-input {
+  border: none;
+  width: 100%;
+}
+
+.search-container:focus {
+  outline: 2px solid #7fd5ff6b;
 }
 
 .nav-bar-input:focus {
-  outline-color: #7fd5ff6b;
+  outline: none;
+}
+
+.search-btn {
+  align-self: center;
+  visibility: hidden;
+}
+
+.display {
+  visibility: visible;
 }

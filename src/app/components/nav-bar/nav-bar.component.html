@@ -3,5 +3,21 @@
     <li [routerLink]="['/banner']" class="nav-bar-list-item">PokeApp</li>
     <li class="nav-bar-list-item active">Pokemons</li>
   </ul>
-  <input type="text" class="nav-bar-input" placeholder="Search" />
+  <div class="search-container">
+    <input
+      type="text"
+      class="nav-bar-input"
+      [(ngModel)]="queryInput"
+      (ngModelChange)="search($event)"
+    />
+    <button
+      mat-icon-button
+      color="warn"
+      class="search-btn"
+      [ngClass]="{ display: queryInput !== undefined }"
+      (click)="clearQuery()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>

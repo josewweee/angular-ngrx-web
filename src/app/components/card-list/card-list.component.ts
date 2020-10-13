@@ -9,6 +9,7 @@ import { defaultDialogConfig } from '../../shared/default-dialog-config';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
+import { SearchBarEventArgs } from '../nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-card-list',
@@ -20,21 +21,38 @@ export class CardListComponent implements OnInit {
   isComparing: boolean = false;
   pokemonBeforeComparing: Pokemon;
   pokemonApiOffset: string = '20';
+  queryParams: string = '';
 
   constructor(
     private pokemonsFetchService: PokemonEntityService,
     private dialog: MatDialog,
-    private pokemonFetchService: FetchedPokemonsEntityService
+    private individualPokemonFetchService: FetchedPokemonsEntityService
   ) {}
 
   ngOnInit(): void {
     this.reload();
+    this.pokemonsFetchService.entities$.forEach((item) => {
+      this.pokemonApiOffset = item.length + '';
+    });
   }
 
   reload() {
-    this.pokemonsName$ = this.pokemonsFetchService.entities$.pipe(
-      map((pokemons) => pokemons)
-    );
+    if (this.queryParams !== '' && this.queryParams !== undefined) {
+      this.pokemonsName$ = this.pokemonsFetchService.entities$.pipe(
+        map((pokemons) =>
+          pokemons.filter((item) => item.name.includes(this.queryParams))
+        )
+      );
+    } else {
+      this.pokemonsName$ = this.pokemonsFetchService.entities$.pipe(
+        map((pokemons) => pokemons)
+      );
+    }
+  }
+
+  filterData(data: SearchBarEventArgs) {
+    this.queryParams = data.newValue;
+    this.reload();
   }
 
   loadMorePokemons() {
@@ -49,7 +67,9 @@ export class CardListComponent implements OnInit {
   async openPokemonModal(pokemon) {
     const dialogConfig = defaultDialogConfig();
 
-    const pokemonData = await this.pokemonFetchService
+    this.pokemonsFetchService.entities$.pipe(tap((item) => console.log(item)));
+
+    const pokemonData = await this.individualPokemonFetchService
       .getByKey(pokemon.url)
       .toPromise();
 

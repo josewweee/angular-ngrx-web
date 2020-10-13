@@ -1,15 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
+  @Output('Searching') changeEvent = new EventEmitter();
+  queryInput: string = undefined;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  search(value) {
+    if (value !== '') {
+      this.changeEvent.emit({
+        newValue: value,
+      });
+    } else {
+      this.queryInput = undefined;
+      this.changeEvent.emit({
+        newValue: undefined,
+      });
+    }
   }
 
+  clearQuery() {
+    this.queryInput = undefined;
+    this.changeEvent.emit({
+      newValue: undefined,
+    });
+  }
+}
+export interface SearchBarEventArgs {
+  newValue: string;
 }
