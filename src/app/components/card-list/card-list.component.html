@@ -1,5 +1,12 @@
 <app-nav-bar (Searching)="filterData($event)"></app-nav-bar>
 <div class="container">
+  <div class="comparing-card">
+    <mat-card class="comparing-card-item" [class.visible]="isComparing == true">
+      <span class="comparing-card-header">Comparing pokemon</span>
+      <hr class="comparing-card-separation" />
+      <span class="comparing-card-body">Charizard</span>
+    </mat-card>
+  </div>
   <div class="card-container">
     <mat-card *ngFor="let pokemon of pokemonsName$ | async">
       <mat-card-actions>
