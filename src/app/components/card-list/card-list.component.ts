@@ -95,11 +95,23 @@ export class CardListComponent implements OnInit {
   async openPokemonModal(pokemon) {
     const dialogConfig = defaultDialogConfig();
 
-    this.pokemonsFetchService.entities$.pipe(tap((item) => console.log(item)));
+    let pokemonData = undefined;
+    this.individualPokemonFetchService.entities$.subscribe((entity) => {
+      let data = entity.filter((item) => item.name === pokemon.name);
+      pokemonData = data[0];
+    });
 
-    const pokemonData = await this.individualPokemonFetchService
-      .getByKey(pokemon.url)
-      .toPromise();
+    if (
+      pokemonData === undefined ||
+      pokemonData.name == undefined ||
+      !pokemonData
+    ) {
+      console.log(`fetching`);
+
+      pokemonData = await this.individualPokemonFetchService
+        .getByKey(pokemon.url)
+        .toPromise();
+    }
 
     if (this.isComparing) {
       dialogConfig.data = {
