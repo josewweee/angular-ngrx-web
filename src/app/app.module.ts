@@ -27,6 +27,7 @@ import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { entityMetadata } from './ngrx/entity-metadata';
+import { FormsModule } from '@angular/forms';
 
 import { environment } from 'src/environments/environment';
 
@@ -39,7 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { FormsModule } from '@angular/forms';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { FormsModule } from '@angular/forms';
     MatDialogModule,
     MatGridListModule,
     InfiniteScrollModule,
+    NgxUiLoaderModule,
   ],
   providers: [
     PokemonsResolver,

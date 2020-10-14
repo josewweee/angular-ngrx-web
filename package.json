@@ -30,6 +30,7 @@
     "@ngrx/store-devtools": "^10.0.0",
     "angular-responsive-carousel": "^1.5.11",
     "ngx-infinite-scroll": "^9.1.0",
+    "ngx-ui-loader": "^9.1.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

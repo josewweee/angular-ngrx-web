@@ -1,3 +1,4 @@
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PokemonsPage } from './../../models/pokemons-page';
 import { Pokemon } from './../../models/pokemon';
 import { FetchedPokemonsEntityService } from './../../services/fetched-pokemons/fetched-pokemons-entity.service';
@@ -28,7 +29,8 @@ export class CardListComponent implements OnInit {
     private pokemonsEntityService: PokemonEntityService,
     private dialog: MatDialog,
     private fetchedPokemonsEntityService: FetchedPokemonsEntityService,
-    private favoriteEntityService: FavoriteEntityService
+    private favoriteEntityService: FavoriteEntityService,
+    private loader: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
@@ -107,27 +109,11 @@ export class CardListComponent implements OnInit {
       pokemonData.name == undefined ||
       !pokemonData
     ) {
+      this.loader.start();
       pokemonData = await this.fetchedPokemonsEntityService
         .getByKey(pokemon.url)
         .toPromise();
-
-      /* let rawPokemonSpecieData = await fetch(pokemonData.species.url);
-      let pokemonSpecieData = await rawPokemonSpecieData.json();
-      pokemonData = {
-        ...pokemonData,
-        flavor_text: pokemonSpecieData['flavor_text_entries'].find((item) => {
-          if (item['language']['name'] == 'en') {
-            return item['flavor_text'];
-          }
-        }),
-        gender:
-          pokemonSpecieData['gender_rate'] == -1
-            ? 'genderless'
-            : pokemonSpecieData['gender_rate'] > 4
-            ? 'female'
-            : 'male',
-      };
-      this.fetchedPokemonsEntityService.updateOneInCache(pokemonData); */
+      this.loader.stop();
     }
 
     if (this.isComparing) {
