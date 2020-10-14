@@ -1,3 +1,5 @@
+@import "../../../colors.scss";
+
 .container {
   padding: 5rem 0;
 }
@@ -11,7 +13,7 @@
 
 .mat-card {
   width: 150px;
-  border: 2px solid #dedddd;
+  border: 2px solid $card-border;
   box-shadow: none;
   margin-right: 2rem;
   margin-bottom: 2rem;
@@ -25,22 +27,22 @@
 
 .mat-card-footer {
   display: block;
-  margin: 0 -16px -16px -16px;
-  background-color: whitesmoke;
+  margin: 0 -1rem -1rem -1rem;
+  background-color: $card-footer;
   text-align: center;
   font-weight: 900;
   letter-spacing: 0.1rem;
-  border-top: 2px solid #dedddd;
+  border-top: 2px solid $card-border;
 }
 
-.comparing-card {
+.comparing-alert {
   position: fixed;
   right: 0;
   z-index: 1;
   visibility: hidden;
   transition: display 3s linear;
 
-  .comparing-card-item {
+  .comparing-alert-item {
     margin-right: 5px;
     padding: 0;
     width: fit-content;
@@ -51,20 +53,20 @@
   visibility: visible;
 }
 
-.comparing-card-header {
+.comparing-alert-header {
   display: block;
   padding: 0.5rem 0.8rem;
   padding-bottom: 0.3rem;
-  color: gray;
+  color: $grey;
   font-weight: 900;
 }
 
-.comparing-card-separation {
+.comparing-alert-separation {
   width: 100%;
   margin: 0;
 }
 
-.comparing-card-body {
+.comparing-alert-body {
   display: block;
   text-align: start;
   padding: 0.5rem 0.8rem;

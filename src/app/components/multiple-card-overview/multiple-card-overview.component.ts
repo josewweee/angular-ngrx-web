@@ -15,21 +15,21 @@ export class MultipleCardOverviewComponent implements OnInit {
   pokemonImage2: string;
   pokemon1: Pokemon;
   pokemon2: Pokemon;
-  infoDetails: any[];
+  pokemonsDetails: any[];
   chartHeight: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private dialogRef: MatDialogRef<MultipleCardOverviewComponent>
   ) {
-    this.title1 = data.dialogTitle1;
-    this.title2 = data.dialogTitle2;
-    this.pokemonImage1 = data.photo1;
-    this.pokemonImage2 = data.photo2;
+    this.title1 = data.pokemon1.name;
+    this.title2 = data.pokemon2.name;
+    this.pokemonImage1 = data.pokemon1.photo;
+    this.pokemonImage2 = data.pokemon2.photo;
     this.pokemon1 = data.pokemon1;
     this.pokemon2 = data.pokemon2;
     this.chartHeight = '300px';
-    this.infoDetails = [
+    this.pokemonsDetails = [
       {
         pokemon1: `${this.pokemon1.height} lbs`,
         stat: 'Height',
@@ -42,6 +42,7 @@ export class MultipleCardOverviewComponent implements OnInit {
       },
       { pokemon1: 'Male', stat: 'Gender', pokemon2: 'Female' },
     ];
+
     CanvasJS.addColorSet('green', [
       '#38786a',
       '#38786a',
@@ -56,7 +57,7 @@ export class MultipleCardOverviewComponent implements OnInit {
     this.Createchart();
   }
 
-  onClose(data) {
+  onClose() {
     this.dialogRef.close(null);
   }
 

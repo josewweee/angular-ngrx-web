@@ -3,10 +3,10 @@ import { Pokemon } from './../../models/pokemon';
 import { FetchedPokemonsEntityService } from './../../services/fetched-pokemons/fetched-pokemons-entity.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { PokemonEntityService } from 'src/app/services/pokemon-entity.service';
-import { filter, first, map, tap } from 'rxjs/operators';
+import { PokemonEntityService } from '../../services/pokemons-page/pokemon-entity.service';
+import { map } from 'rxjs/operators';
 import { defaultDialogConfig } from '../../shared/default-dialog-config';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
 import { SearchBarEventArgs } from '../nav-bar/nav-bar.component';
@@ -18,35 +18,36 @@ import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favori
   styleUrls: ['./card-list.component.scss'],
 })
 export class CardListComponent implements OnInit {
-  pokemonsName$: Observable<PokemonsPage[]>;
+  pokemonsPage$: Observable<PokemonsPage[]>;
   isComparing: boolean = false;
   pokemonBeforeComparing: Pokemon;
   pokemonApiOffset: string = '20';
   queryParams: string = '';
 
   constructor(
-    private pokemonsFetchService: PokemonEntityService,
+    private pokemonsEntityService: PokemonEntityService,
     private dialog: MatDialog,
-    private individualPokemonFetchService: FetchedPokemonsEntityService,
-    private favoriteService: FavoriteEntityService
+    private fetchedPokemonsEntityService: FetchedPokemonsEntityService,
+    private favoriteEntityService: FavoriteEntityService
   ) {}
 
   ngOnInit(): void {
     this.reload();
-    this.pokemonsFetchService.entities$.forEach((item) => {
+
+    this.pokemonsEntityService.entities$.forEach((item) => {
       this.pokemonApiOffset = item.length + '';
     });
   }
 
   reload() {
     if (this.queryParams !== '' && this.queryParams !== undefined) {
-      this.pokemonsName$ = this.pokemonsFetchService.entities$.pipe(
+      this.pokemonsPage$ = this.pokemonsEntityService.entities$.pipe(
         map((pokemons) =>
           pokemons.filter((item) => item.name.includes(this.queryParams))
         )
       );
     } else {
-      this.pokemonsName$ = this.pokemonsFetchService.entities$.pipe(
+      this.pokemonsPage$ = this.pokemonsEntityService.entities$.pipe(
         map((pokemons) => pokemons)
       );
     }
@@ -61,30 +62,30 @@ export class CardListComponent implements OnInit {
     let favoritesLength = undefined;
     let removingFavorite = false;
 
-    this.favoriteService.entities$.subscribe((entities) => {
+    this.favoriteEntityService.entities$.subscribe((entities) => {
       favoritesLength = entities.length;
+
       if (entities.find((item) => item.name == pokemon.name)) {
         removingFavorite = true;
       }
     });
-
     if (removingFavorite) {
       const newPokemon = { ...pokemon, isFavorite: false };
-      this.pokemonsFetchService.updateOneInCache(newPokemon);
-      this.favoriteService.removeOneFromCache(pokemon);
+      this.pokemonsEntityService.updateOneInCache(newPokemon);
+      this.favoriteEntityService.removeOneFromCache(pokemon);
     } else {
       if (favoritesLength !== undefined && favoritesLength >= 5) {
         console.log(`ya no agregamos mas`);
       } else {
         const newPokemon = { ...pokemon, isFavorite: true };
-        this.pokemonsFetchService.updateOneInCache(newPokemon);
-        this.favoriteService.addOneToCache(pokemon);
+        this.pokemonsEntityService.updateOneInCache(newPokemon);
+        this.favoriteEntityService.addOneToCache(pokemon);
       }
     }
   }
 
   loadMorePokemons() {
-    this.pokemonsFetchService.getWithQuery({
+    this.pokemonsEntityService.getWithQuery({
       limit: '20',
       id: this.pokemonApiOffset,
     });
@@ -96,7 +97,7 @@ export class CardListComponent implements OnInit {
     const dialogConfig = defaultDialogConfig();
 
     let pokemonData = undefined;
-    this.individualPokemonFetchService.entities$.subscribe((entity) => {
+    this.fetchedPokemonsEntityService.entities$.subscribe((entity) => {
       let data = entity.filter((item) => item.name === pokemon.name);
       pokemonData = data[0];
     });
@@ -106,19 +107,15 @@ export class CardListComponent implements OnInit {
       pokemonData.name == undefined ||
       !pokemonData
     ) {
-      pokemonData = await this.individualPokemonFetchService
+      pokemonData = await this.fetchedPokemonsEntityService
         .getByKey(pokemon.url)
         .toPromise();
     }
 
     if (this.isComparing) {
       dialogConfig.data = {
-        dialogTitle1: this.pokemonBeforeComparing.name,
-        dialogTitle2: pokemonData.name,
-        photo1: this.pokemonBeforeComparing.photo,
-        photo2: pokemon.photo,
         pokemon1: this.pokemonBeforeComparing,
-        pokemon2: pokemonData,
+        pokemon2: { ...pokemonData, photo: pokemon.photo },
       };
       this.dialog
         .open(MultipleCardOverviewComponent, dialogConfig)

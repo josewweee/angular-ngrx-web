@@ -1,8 +1,8 @@
 import { FavoriteEntityService } from './services/favorite-pokemons/favorite-entity.service';
 import { FetchedPokemonsDataService } from './services/fetched-pokemons/fetched-pokemons-data.service';
 import { FetchedPokemonsEntityService } from './services/fetched-pokemons/fetched-pokemons-entity.service';
-import { PokemonDataService } from './services/pokemon-data.service';
-import { PokemonEntityService } from './services/pokemon-entity.service';
+import { PokemonDataService } from './services/pokemons-page/pokemon-data.service';
+import { PokemonEntityService } from './services/pokemons-page/pokemon-entity.service';
 import { PokemonsResolver } from './ngrx/pokemons.resolver';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';

@@ -1,9 +1,9 @@
-import { PokemonsPage } from './../models/pokemons-page';
+import { PokemonsPage } from '../../models/pokemons-page';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DefaultDataService, HttpUrlGenerator } from '@ngrx/data';
 import { Observable } from 'rxjs';
-import { map, tap, first } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonDataService extends DefaultDataService<PokemonsPage> {
@@ -30,7 +30,6 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
               firstSlashInUrl + 1,
               lastSlashInUrl
             );
-            // let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
             let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
             item.photo = photo;
           });
@@ -50,7 +49,6 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
             firstSlashInUrl + 1,
             lastSlashInUrl
           );
-          // let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
           let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
           item.photo = photo;
           if (

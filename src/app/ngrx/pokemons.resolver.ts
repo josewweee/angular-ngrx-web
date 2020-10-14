@@ -1,4 +1,4 @@
-import { PokemonEntityService } from './../services/pokemon-entity.service';
+import { PokemonEntityService } from './../services/pokemons-page/pokemon-entity.service';
 import { Injectable } from '@angular/core';
 import {
   Resolve,

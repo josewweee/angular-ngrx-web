@@ -1,5 +1,7 @@
+@import "../../../colors.scss";
+
 .nav-bar {
-  padding: 0 10px;
+  padding: 0 0.625rem;
   justify-content: space-between;
   width: 100%;
   position: fixed;
@@ -24,11 +26,11 @@
 .search-container {
   display: flex;
   flex-direction: row;
-  border: 1px solid #cecece;
+  border: 1px solid $search-box;
   border-radius: 4px;
-  background: white;
+  background: $white;
   height: 1.5rem;
-  padding: 1px;
+  padding: 0.063rem;
 }
 
 .nav-bar-input {
@@ -37,7 +39,7 @@
 }
 
 .search-container:focus {
-  outline: 2px solid #7fd5ff6b;
+  outline: 2px solid $search-box-focus;
 }
 
 .nav-bar-input:focus {

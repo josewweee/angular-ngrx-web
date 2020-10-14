@@ -1,12 +1,10 @@
 import { FavoriteEntityService } from './../../services/favorite-pokemons/favorite-entity.service';
 import { PokemonsPage } from './../../models/pokemons-page';
 import { Pokemon } from './../../models/pokemon';
-import { FetchedPokemonsEntityService } from './../../services/fetched-pokemons/fetched-pokemons-entity.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PokemonEntityService } from 'src/app/services/pokemon-entity.service';
+import { PokemonEntityService } from '../../services/pokemons-page/pokemon-entity.service';
 import * as CanvasJS from '../../shared/canvasjs.min';
-import { first, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -32,7 +30,6 @@ export class SingleCardOverviewComponent implements OnInit {
     this.favoriteStatus = data.pokemonPageInfo.isFavorite;
     this.title = data.pokemonPageInfo.name;
     this.pokemonImage = data.pokemonPageInfo.photo;
-    console.log(this.pokemon);
 
     CanvasJS.addColorSet('green', [
       '#38786a',
