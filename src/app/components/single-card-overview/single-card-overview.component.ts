@@ -1,3 +1,5 @@
+import { FavoriteEntityService } from './../../services/favorite-pokemons/favorite-entity.service';
+import { PokemonsPage } from './../../models/pokemons-page';
 import { Pokemon } from './../../models/pokemon';
 import { FetchedPokemonsEntityService } from './../../services/fetched-pokemons/fetched-pokemons-entity.service';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -14,15 +16,22 @@ import { first, map } from 'rxjs/operators';
 export class SingleCardOverviewComponent implements OnInit {
   pokemon: Pokemon;
   pokemonImage: string;
+  pokemonPageInfo: PokemonsPage;
+  favoriteStatus: boolean;
   title: string;
   chartHeight: string;
+
   constructor(
     private dialogRef: MatDialogRef<SingleCardOverviewComponent>,
-    @Inject(MAT_DIALOG_DATA) data
+    @Inject(MAT_DIALOG_DATA) data,
+    private favoriteService: FavoriteEntityService,
+    private pokemonsFetchService: PokemonEntityService
   ) {
-    this.title = data.dialogTitle;
-    this.pokemonImage = data.photo;
     this.pokemon = data.pokemon;
+    this.pokemonPageInfo = data.pokemonPageInfo;
+    this.favoriteStatus = data.pokemonPageInfo.isFavorite;
+    this.title = data.pokemonPageInfo.name;
+    this.pokemonImage = data.pokemonPageInfo.photo;
     console.log(this.pokemon);
 
     CanvasJS.addColorSet('green', [
@@ -78,5 +87,33 @@ export class SingleCardOverviewComponent implements OnInit {
     });
 
     chart.render();
+  }
+
+  addToFavorites(pokemon: PokemonsPage) {
+    let favoritesLength = undefined;
+    let removingFavorite = false;
+
+    this.favoriteService.entities$.subscribe((entities) => {
+      favoritesLength = entities.length;
+      if (entities.find((item) => item.name == pokemon.name)) {
+        removingFavorite = true;
+      }
+    });
+
+    if (removingFavorite) {
+      const newPokemon = { ...pokemon, isFavorite: false };
+      this.favoriteStatus = false;
+      this.pokemonsFetchService.updateOneInCache(newPokemon);
+      this.favoriteService.removeOneFromCache(pokemon);
+    } else {
+      if (favoritesLength !== undefined && favoritesLength >= 5) {
+        console.log(`ya no agregamos mas`);
+      } else {
+        const newPokemon = { ...pokemon, isFavorite: true };
+        this.favoriteStatus = true;
+        this.pokemonsFetchService.updateOneInCache(newPokemon);
+        this.favoriteService.addOneToCache(pokemon);
+      }
+    }
   }
 }

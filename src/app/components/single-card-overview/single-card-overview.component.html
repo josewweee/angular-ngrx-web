@@ -2,8 +2,13 @@
   <div class="dialog-header">
     <h2 mat-dialog-title>{{ title }}</h2>
     <mat-dialog-actions>
-      <button mat-icon-button color="warn">
-        <mat-icon>favorite</mat-icon>
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="addToFavorites(pokemonPageInfo)"
+      >
+        <mat-icon *ngIf="!favoriteStatus">favorite_border</mat-icon>
+        <mat-icon *ngIf="favoriteStatus">favorite</mat-icon>
       </button>
       <button mat-icon-button color="warn" (click)="onClose(null)">
         <mat-icon>close</mat-icon>

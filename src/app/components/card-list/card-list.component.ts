@@ -133,8 +133,7 @@ export class CardListComponent implements OnInit {
         });
     } else {
       dialogConfig.data = {
-        dialogTitle: pokemon.name,
-        photo: pokemon.photo,
+        pokemonPageInfo: pokemon,
         pokemon: pokemonData,
       };
 
