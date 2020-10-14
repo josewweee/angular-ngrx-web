@@ -106,8 +106,6 @@ export class CardListComponent implements OnInit {
       pokemonData.name == undefined ||
       !pokemonData
     ) {
-      console.log(`fetching`);
-
       pokemonData = await this.individualPokemonFetchService
         .getByKey(pokemon.url)
         .toPromise();

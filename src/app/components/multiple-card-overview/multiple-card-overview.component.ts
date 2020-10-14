@@ -28,7 +28,7 @@ export class MultipleCardOverviewComponent implements OnInit {
     this.pokemonImage2 = data.photo2;
     this.pokemon1 = data.pokemon1;
     this.pokemon2 = data.pokemon2;
-    this.chartHeight = '200px';
+    this.chartHeight = '300px';
     this.infoDetails = [
       {
         pokemon1: `${this.pokemon1.height} lbs`,
@@ -65,6 +65,7 @@ export class MultipleCardOverviewComponent implements OnInit {
       animationEnabled: true,
       exportEnabled: true,
       colorSet: 'green',
+      height: 300,
       title: {
         text: 'Stats',
       },

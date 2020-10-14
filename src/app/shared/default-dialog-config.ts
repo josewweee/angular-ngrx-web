@@ -7,7 +7,7 @@ export function defaultDialogConfig() {
   dialogConfig.autoFocus = true;
   dialogConfig.width = '500px';
   dialogConfig.maxWidth = '90vw';
-  dialogConfig.height = '90vh';
+  dialogConfig.height = 'fit-content';
   dialogConfig.panelClass = 'custom-dialog-panel';
 
   return dialogConfig;

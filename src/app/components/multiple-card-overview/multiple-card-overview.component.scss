@@ -1,10 +1,6 @@
-/* .mat-dialog {
-  height: 50vh;
+.mat-dialog {
+  overflow: hidden;
 }
-
-.mat-grid-list {
-  height: 100%;
-} */
 
 .dialog-header {
   display: flex;
@@ -22,12 +18,19 @@
   }
 }
 
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+}
+
 .body-img {
+  max-height: 200px;
+
   .body-img-item {
-    max-width: 200px;
+    max-width: 180px;
 
     @media (max-width: 768px) {
-      max-width: 180px;
+      max-width: 160px;
     }
     @media (max-width: 375px) {
       max-width: 140px;
@@ -47,5 +50,17 @@
   .info-details-list {
     list-style: none;
     padding: 0;
+  }
+}
+
+.dialog-footer {
+  height: 100%;
+  .chart {
+    margin: auto;
+    max-width: 680px;
+
+    .canvasjs-chart-canvas {
+      height: 300px !important;
+    }
   }
 }

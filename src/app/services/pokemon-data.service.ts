@@ -30,7 +30,8 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
               firstSlashInUrl + 1,
               lastSlashInUrl
             );
-            let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
+            // let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
+            let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
             item.photo = photo;
           });
           return res;
@@ -49,7 +50,8 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
             firstSlashInUrl + 1,
             lastSlashInUrl
           );
-          let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
+          // let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/${pokemonId}.png`;
+          let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
           item.photo = photo;
           if (
             item.name == 'bulbasaur' ||
