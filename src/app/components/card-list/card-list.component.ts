@@ -96,7 +96,7 @@ export class CardListComponent implements OnInit {
   async openPokemonModal(pokemon) {
     const dialogConfig = defaultDialogConfig();
 
-    let pokemonData = undefined;
+    let pokemonData: Pokemon = undefined;
     this.fetchedPokemonsEntityService.entities$.subscribe((entity) => {
       let data = entity.filter((item) => item.name === pokemon.name);
       pokemonData = data[0];
@@ -110,6 +110,24 @@ export class CardListComponent implements OnInit {
       pokemonData = await this.fetchedPokemonsEntityService
         .getByKey(pokemon.url)
         .toPromise();
+
+      /* let rawPokemonSpecieData = await fetch(pokemonData.species.url);
+      let pokemonSpecieData = await rawPokemonSpecieData.json();
+      pokemonData = {
+        ...pokemonData,
+        flavor_text: pokemonSpecieData['flavor_text_entries'].find((item) => {
+          if (item['language']['name'] == 'en') {
+            return item['flavor_text'];
+          }
+        }),
+        gender:
+          pokemonSpecieData['gender_rate'] == -1
+            ? 'genderless'
+            : pokemonSpecieData['gender_rate'] > 4
+            ? 'female'
+            : 'male',
+      };
+      this.fetchedPokemonsEntityService.updateOneInCache(pokemonData); */
     }
 
     if (this.isComparing) {

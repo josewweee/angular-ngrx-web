@@ -17,6 +17,6 @@ export interface Pokemon {
   types: any[];
   weight: number;
   gender?: string;
-  flavor_text?: string;
+  flavor_text?: any;
   photo?: string;
 }

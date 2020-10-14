@@ -4,7 +4,6 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FetchedPokemonsEntityService extends EntityCollectionServiceBase<

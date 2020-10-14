@@ -32,7 +32,7 @@
       <!-- info -->
       <div class="body-info">
         <div class="info-text">
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+          <p>{{ pokemon.flavor_text.flavor_text }}</p>
         </div>
         <div class="info-details">
           <mat-grid-list cols="3" rowHeight="60px" class="info-details-row-1">
@@ -46,7 +46,7 @@
             </mat-grid-tile>
             <mat-grid-tile [rowspan]="1">
               <mat-grid-tile-header>Gender</mat-grid-tile-header
-              ><span class="info-details-data"> male </span>
+              ><span class="info-details-data"> {{ pokemon.gender }} </span>
             </mat-grid-tile>
           </mat-grid-list>
           <mat-grid-list cols="4" rowHeight="60px" class="info-details-row-2">

@@ -40,7 +40,11 @@ export class MultipleCardOverviewComponent implements OnInit {
         stat: 'Weight',
         pokemon2: `${this.pokemon2.weight} ft`,
       },
-      { pokemon1: 'Male', stat: 'Gender', pokemon2: 'Female' },
+      {
+        pokemon1: this.pokemon1.gender,
+        stat: 'Gender',
+        pokemon2: this.pokemon2.gender,
+      },
     ];
 
     CanvasJS.addColorSet('green', [
