@@ -21,7 +21,7 @@
           <mat-icon *ngIf="pokemon.isFavorite">favorite</mat-icon>
         </button>
       </mat-card-actions>
-      <div (click)="openPokemonModal(pokemon)">
+      <div (click)="openPokemonDialog(pokemon)">
         <img mat-card-image src="{{ pokemon.photo }}" />
         <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
       </div>

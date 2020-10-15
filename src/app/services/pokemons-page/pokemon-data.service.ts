@@ -22,12 +22,9 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
         map((res: PokemonsPage[]) => {
           res.map((item: PokemonsPage) => {
             const lastSlashInUrl = item['url'].lastIndexOf('/');
-            const firstSlashInUrl = item['url'].indexOf(
-              '/',
-              lastSlashInUrl - 4
-            );
+            const lastLetterInUrl = item['url'].indexOf('n');
             const pokemonId = item['url'].slice(
-              firstSlashInUrl + 1,
+              lastLetterInUrl + 2,
               lastSlashInUrl
             );
             let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
@@ -44,9 +41,9 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
       map((res: PokemonsPage[]) => {
         res.map((item: PokemonsPage) => {
           const lastSlashInUrl = item['url'].lastIndexOf('/');
-          const firstSlashInUrl = item['url'].indexOf('/', lastSlashInUrl - 4);
+          const lastLetterInUrl = item['url'].indexOf('n');
           const pokemonId = item['url'].slice(
-            firstSlashInUrl + 1,
+            lastLetterInUrl + 2,
             lastSlashInUrl
           );
           let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;

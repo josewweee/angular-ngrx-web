@@ -28,6 +28,9 @@ export class MultipleCardOverviewComponent implements OnInit {
     this.pokemonImage2 = data.pokemon2.photo;
     this.pokemon1 = data.pokemon1;
     this.pokemon2 = data.pokemon2;
+  }
+
+  ngOnInit(): void {
     this.chartHeight = '300px';
     this.pokemonsDetails = [
       {
@@ -55,9 +58,6 @@ export class MultipleCardOverviewComponent implements OnInit {
       '#38786a',
       '#38786a',
     ]);
-  }
-
-  ngOnInit(): void {
     this.Createchart();
   }
 

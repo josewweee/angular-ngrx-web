@@ -95,7 +95,7 @@ export class CardListComponent implements OnInit {
     this.pokemonApiOffset = nextOffsetInt + '';
   }
 
-  async openPokemonModal(pokemon) {
+  async openPokemonDialog(pokemon) {
     const dialogConfig = defaultDialogConfig();
 
     let pokemonData: Pokemon = undefined;

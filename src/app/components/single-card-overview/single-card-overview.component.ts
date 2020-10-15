@@ -30,7 +30,9 @@ export class SingleCardOverviewComponent implements OnInit {
     this.favoriteStatus = data.pokemonPageInfo.isFavorite;
     this.title = data.pokemonPageInfo.name;
     this.pokemonImage = data.pokemonPageInfo.photo;
+  }
 
+  ngOnInit(): void {
     CanvasJS.addColorSet('green', [
       '#38786a',
       '#38786a',
@@ -41,9 +43,6 @@ export class SingleCardOverviewComponent implements OnInit {
     ]);
 
     this.chartHeight = '300px';
-  }
-
-  ngOnInit(): void {
     this.Createchart();
   }
 
