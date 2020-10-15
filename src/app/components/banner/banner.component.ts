@@ -1,5 +1,6 @@
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { environment } from './../../../environments/environment';
+import { initialValues } from './banner.constants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favorite-entity.service';
 
@@ -48,26 +49,6 @@ export class BannerComponent implements OnInit, OnDestroy {
 
   initializeDefaultFavoritePokemons() {
     if (this.favoritesLength === 0) {
-      const initialValues = [
-        {
-          name: 'bulbasaur',
-          url: environment.initialFavoritePokemonsBaseUrl[0],
-          photo: environment.initialFavoritePokemonImages[0],
-          isFavorite: true,
-        },
-        {
-          name: 'charmander',
-          url: environment.initialFavoritePokemonsBaseUrl[1],
-          photo: environment.initialFavoritePokemonImages[1],
-          isFavorite: true,
-        },
-        {
-          name: 'squirtle',
-          url: environment.initialFavoritePokemonsBaseUrl[2],
-          photo: environment.initialFavoritePokemonImages[2],
-          isFavorite: true,
-        },
-      ];
       this.favoriteEntityService.addManyToCache(initialValues);
     }
   }
