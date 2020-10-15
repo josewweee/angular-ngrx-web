@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { environment } from './../../../environments/environment';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favorite-entity.service';
 
 @Component({
@@ -6,62 +8,71 @@ import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favori
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss'],
 })
-export class BannerComponent implements OnInit {
-  images: any = [
+export class BannerComponent implements OnInit, OnDestroy {
+  images = [
     {
-      path:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/1.png',
+      path: environment.initialFavoritePokemonImages[0],
     },
     {
-      path:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/4.png',
+      path: environment.initialFavoritePokemonImages[1],
     },
     {
-      path:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/7.png',
+      path: environment.initialFavoritePokemonImages[2],
     },
   ];
 
-  favoritesLength: number = undefined;
+  favoritesLength: number;
+
+  favoritePokemons$: Subscription;
 
   constructor(private favoriteEntityService: FavoriteEntityService) {}
 
   ngOnInit(): void {
-    this.favoriteEntityService.entities$.subscribe((data) => {
-      this.favoritesLength = data.length;
-      if (this.favoritesLength > 0) {
-        this.images = [];
-        data.forEach((item) => {
-          this.images.push({ path: item.photo });
-        });
-      }
-    });
+    this.updateFavoritePokemonsImages();
+    this.initializeDefaultFavoritePokemons();
+  }
 
+  updateFavoritePokemonsImages() {
+    this.favoritePokemons$ = this.favoriteEntityService.entities$.subscribe(
+      (data) => {
+        this.favoritesLength = data.length;
+        if (this.favoritesLength > 0) {
+          this.images = [];
+          data.map((item) => {
+            this.images.push({ path: item.photo });
+          });
+        }
+      }
+    );
+  }
+
+  initializeDefaultFavoritePokemons() {
     if (this.favoritesLength === 0) {
-      let initialValues = [
+      const initialValues = [
         {
           name: 'bulbasaur',
-          url: 'https://pokeapi.co/api/v2/pokemon/1/',
-          photo:
-            'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/1.png',
+          url: environment.initialFavoritePokemonsBaseUrl[0],
+          photo: environment.initialFavoritePokemonImages[0],
           isFavorite: true,
         },
         {
           name: 'charmander',
-          url: 'https://pokeapi.co/api/v2/pokemon/4/',
-          photo:
-            'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/4.png',
+          url: environment.initialFavoritePokemonsBaseUrl[1],
+          photo: environment.initialFavoritePokemonImages[1],
           isFavorite: true,
         },
         {
           name: 'squirtle',
-          url: 'https://pokeapi.co/api/v2/pokemon/7/',
-          photo:
-            'https://raw.githubusercontent.com/PokeAPI/sprites/146c91287ad01f6e15315bbd733fd7442c91fe6d/sprites/pokemon/7.png',
+          url: environment.initialFavoritePokemonsBaseUrl[2],
+          photo: environment.initialFavoritePokemonImages[2],
           isFavorite: true,
         },
       ];
       this.favoriteEntityService.addManyToCache(initialValues);
     }
+  }
+
+  ngOnDestroy() {
+    this.favoritePokemons$.unsubscribe();
   }
 }
