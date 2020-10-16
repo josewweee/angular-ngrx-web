@@ -1,8 +1,8 @@
-import { details } from './../../models/multiple-card-overview/details';
-import { Pokemon } from '../../models/shared/pokemon';
+import { details } from '../../../models/multiple-card-overview/details';
+import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import * as CanvasJS from '../../shared/canvasjs.min';
+import * as CanvasJS from '../../../shared/canvasjs.min.js';
 
 @Component({
   selector: 'app-multiple-card-overview',

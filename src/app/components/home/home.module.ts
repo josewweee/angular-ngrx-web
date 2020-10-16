@@ -8,7 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from '../app-routing.module';
+import { AppRoutingModule } from '../../app-routing.module';
 
 import { CardListComponent } from './card-list/card-list.component';
 import { MultipleCardOverviewComponent } from './multiple-card-overview/multiple-card-overview.component';

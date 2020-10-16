@@ -1,47 +1,23 @@
-import { HomeModule } from './components/home.module';
-import { FavoriteEntityService } from './services/favorite-pokemons/favorite-entity.service';
-import { FetchedPokemonsDataService } from './services/fetched-pokemons/fetched-pokemons-data.service';
-import { FetchedPokemonsEntityService } from './services/fetched-pokemons/fetched-pokemons-entity.service';
-import { PokemonDataService } from './services/pokemons-page/pokemon-data.service';
-import { PokemonEntityService } from './services/pokemons-page/pokemon-entity.service';
-import { PokemonsResolver } from './ngrx/pokemons.resolver';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+
+import { EntityDataModule } from '@ngrx/data';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { entityMetadata } from './ngrx/entity-metadata';
+
+import { CoreModule } from './core/core.module';
+import { HomeModule } from './components/home/home.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BannerComponent } from './components/banner/banner.component';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { CardListComponent } from './components/card-list/card-list.component';
-import { SingleCardOverviewComponent } from './components/single-card-overview/single-card-overview.component';
-import { MultipleCardOverviewComponent } from './components/multiple-card-overview/multiple-card-overview.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {
-  EntityDataModule,
-  EntityDataService,
-  EntityDefinitionService,
-} from '@ngrx/data';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { EffectsModule } from '@ngrx/effects';
-import { HttpClientModule } from '@angular/common/http';
-import { entityMetadata } from './ngrx/entity-metadata';
-import { FormsModule } from '@angular/forms';
-
 import { environment } from 'src/environments/environment';
 
 import { IvyCarouselModule } from 'angular-responsive-carousel';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatGridListModule } from '@angular/material/grid-list';
-
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [AppComponent, BannerComponent],
@@ -59,28 +35,10 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
       logOnly: environment.production,
     }),
     HomeModule,
+    CoreModule,
     IvyCarouselModule,
   ],
-  providers: [
-    PokemonsResolver,
-    PokemonEntityService,
-    PokemonDataService,
-    FetchedPokemonsEntityService,
-    FetchedPokemonsDataService,
-    FavoriteEntityService,
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(
-    private entityDataService: EntityDataService,
-    private pokemonDataService: PokemonDataService,
-    private fetchedPokemonsDataService: FetchedPokemonsDataService
-  ) {
-    entityDataService.registerService('Pokemons', pokemonDataService);
-    entityDataService.registerService(
-      'FetchedPokemons',
-      fetchedPokemonsDataService
-    );
-  }
-}
+export class AppModule {}

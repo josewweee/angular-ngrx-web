@@ -1,10 +1,10 @@
-import { FavoriteEntityService } from './../../services/favorite-pokemons/favorite-entity.service';
-import { PokemonsPage } from './../../models/shared/pokemons-page';
-import { Pokemon } from '../../models/shared/pokemon';
+import { FavoriteEntityService } from '../../../services/favorite-pokemons/favorite-entity.service';
+import { PokemonsPage } from '../../../models/shared/pokemons-page';
+import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PokemonEntityService } from '../../services/pokemons-page/pokemon-entity.service';
-import * as CanvasJS from '../../shared/canvasjs.min';
+import { PokemonEntityService } from '../../../services/pokemons-page/pokemon-entity.service';
+import * as CanvasJS from '../../../shared/canvasjs.min';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -103,7 +103,7 @@ export class SingleCardOverviewComponent implements OnInit {
       this.favoriteService.removeOneFromCache(pokemon);
     } else {
       if (favoritesLength !== undefined && favoritesLength >= 5) {
-        console.log(`ya no agregamos mas`);
+        alert(`Favorite Limit Reached`);
       } else {
         const newPokemon = { ...pokemon, isFavorite: true };
         this.favoriteStatus = true;
