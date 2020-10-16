@@ -14,7 +14,7 @@
       mat-icon-button
       color="warn"
       class="search-btn"
-      [ngClass]="{ display: queryInput !== undefined }"
+      [ngClass]="{ 'display-item': queryInput !== undefined }"
       (click)="clearQuery()"
     >
       <mat-icon>close</mat-icon>

@@ -1,4 +1,4 @@
-import { Pokemon } from './../../models/pokemon';
+import { Pokemon } from '../../models/shared/pokemon';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DefaultDataService, HttpUrlGenerator } from '@ngrx/data';
@@ -11,9 +11,11 @@ export class FetchedPokemonsDataService extends DefaultDataService<Pokemon> {
     super('Pokemons', http, httpUrlGenerator);
   }
 
-  request = (url: string) => this.http.get(url);
+  request(url: string) {
+    return this.http.get(url);
+  }
 
-  getById(url): Observable<Pokemon> {
+  getById(url: string): Observable<Pokemon> {
     return this.request(url).pipe(
       switchMap((response: Pokemon) => {
         return this.request(response.species.url).pipe(
@@ -29,8 +31,6 @@ export class FetchedPokemonsDataService extends DefaultDataService<Pokemon> {
                 return item['flavor_text'];
               }
             });
-            console.log(response);
-
             return response;
           })
         );

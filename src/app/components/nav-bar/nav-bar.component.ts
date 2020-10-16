@@ -33,6 +33,3 @@ export class NavBarComponent implements OnInit {
     });
   }
 }
-export interface SearchBarEventArgs {
-  newValue: string;
-}

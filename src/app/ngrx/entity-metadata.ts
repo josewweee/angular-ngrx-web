@@ -1,5 +1,5 @@
 import { EntityMetadataMap } from '@ngrx/data';
-import { PokemonsPage } from '../models/pokemons-page';
+import { PokemonsPage } from '../models/shared/pokemons-page';
 
 export const entityMetadata: EntityMetadataMap = {
   Pokemons: {

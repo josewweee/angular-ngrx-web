@@ -1,4 +1,5 @@
-import { Pokemon } from './../../models/pokemon';
+import { details } from './../../models/multiple-card-overview/details';
+import { Pokemon } from '../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as CanvasJS from '../../shared/canvasjs.min';
@@ -15,7 +16,7 @@ export class MultipleCardOverviewComponent implements OnInit {
   pokemonImage2: string;
   pokemon1: Pokemon;
   pokemon2: Pokemon;
-  pokemonsDetails: any[];
+  pokemonsDetails: details[];
   chartHeight: string;
 
   constructor(
@@ -58,14 +59,14 @@ export class MultipleCardOverviewComponent implements OnInit {
       '#38786a',
       '#38786a',
     ]);
-    this.Createchart();
+    this.createchart();
   }
 
   onClose() {
     this.dialogRef.close(null);
   }
 
-  Createchart() {
+  createchart() {
     let chart = new CanvasJS.Chart('chartContainer', {
       animationEnabled: true,
       exportEnabled: true,

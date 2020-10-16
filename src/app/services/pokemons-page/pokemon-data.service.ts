@@ -1,9 +1,10 @@
-import { PokemonsPage } from '../../models/pokemons-page';
+import { PokemonsPage } from '../../models/shared/pokemons-page';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DefaultDataService, HttpUrlGenerator } from '@ngrx/data';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonDataService extends DefaultDataService<PokemonsPage> {
@@ -13,9 +14,7 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
 
   getWithQuery(options): Observable<PokemonsPage[]> {
     return this.http
-      .get(
-        `https://pokeapi.co/api/v2/pokemon/?limit=${options.limit}&offset=${options.id}`
-      )
+      .get(environment.pokemonApiPageBaseUrl(options.limit, options.id))
       .pipe(
         tap((res) => console.log(res['results'])),
         map((res) => res['results']),
@@ -27,7 +26,7 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
               lastLetterInUrl + 2,
               lastSlashInUrl
             );
-            let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
+            let photo = environment.pokemonImage(pokemonId);
             item.photo = photo;
           });
           return res;
@@ -36,7 +35,7 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
   }
 
   getAll(): Observable<PokemonsPage[]> {
-    return this.http.get('https://pokeapi.co/api/v2/pokemon/').pipe(
+    return this.http.get(environment.pokemonsBaseUrl).pipe(
       map((res) => res['results']),
       map((res: PokemonsPage[]) => {
         res.map((item: PokemonsPage) => {
@@ -46,7 +45,7 @@ export class PokemonDataService extends DefaultDataService<PokemonsPage> {
             lastLetterInUrl + 2,
             lastSlashInUrl
           );
-          let photo = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
+          let photo = environment.pokemonImage(pokemonId);
           item.photo = photo;
           if (
             item.name == 'bulbasaur' ||

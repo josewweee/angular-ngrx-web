@@ -1,6 +1,6 @@
 import { FavoriteEntityService } from './../../services/favorite-pokemons/favorite-entity.service';
-import { PokemonsPage } from './../../models/pokemons-page';
-import { Pokemon } from './../../models/pokemon';
+import { PokemonsPage } from './../../models/shared/pokemons-page';
+import { Pokemon } from '../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PokemonEntityService } from '../../services/pokemons-page/pokemon-entity.service';
@@ -43,7 +43,7 @@ export class SingleCardOverviewComponent implements OnInit {
     ]);
 
     this.chartHeight = '300px';
-    this.Createchart();
+    this.createchart();
   }
 
   onClose(data) {
@@ -56,7 +56,7 @@ export class SingleCardOverviewComponent implements OnInit {
     }
   }
 
-  Createchart() {
+  createchart() {
     let chart = new CanvasJS.Chart('chartContainer', {
       animationEnabled: true,
       exportEnabled: true,

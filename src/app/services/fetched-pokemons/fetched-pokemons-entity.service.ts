@@ -1,4 +1,4 @@
-import { Pokemon } from './../../models/pokemon';
+import { Pokemon } from '../../models/shared/pokemon';
 import { Injectable } from '@angular/core';
 import {
   EntityCollectionServiceBase,

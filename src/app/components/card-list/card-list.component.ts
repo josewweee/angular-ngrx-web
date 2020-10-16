@@ -1,6 +1,7 @@
+import { SearchBarEventArgs } from './../../models/nav-bar/search-bar-event-args';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { PokemonsPage } from './../../models/pokemons-page';
-import { Pokemon } from './../../models/pokemon';
+import { PokemonsPage } from './../../models/shared/pokemons-page';
+import { Pokemon } from '../../models/shared/pokemon';
 import { FetchedPokemonsEntityService } from './../../services/fetched-pokemons/fetched-pokemons-entity.service';
 import { Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -10,7 +11,6 @@ import { defaultDialogConfig } from '../../shared/default-dialog-config';
 import { MatDialog } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
-import { SearchBarEventArgs } from '../nav-bar/nav-bar.component';
 import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favorite-entity.service';
 
 @Component({

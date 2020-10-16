@@ -1,3 +1,4 @@
+import { imagesPath } from './../../models/banner/imagesPath';
 import { Subscription } from 'rxjs';
 import { environment } from './../../../environments/environment';
 import { initialValues } from './banner.constants';
@@ -10,7 +11,7 @@ import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favori
   styleUrls: ['./banner.component.scss'],
 })
 export class BannerComponent implements OnInit, OnDestroy {
-  images = [
+  images: imagesPath[] = [
     {
       path: environment.initialFavoritePokemonImages[0],
     },

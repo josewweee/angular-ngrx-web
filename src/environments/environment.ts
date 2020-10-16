@@ -17,6 +17,11 @@ export const environment = {
     'https://pokeapi.co/api/v2/pokemon/4/',
     'https://pokeapi.co/api/v2/pokemon/7/',
   ],
+  pokemonsBaseUrl: 'https://pokeapi.co/api/v2/pokemon/',
+  pokemonApiPageBaseUrl: (limit, offset): string =>
+    `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`,
+  pokemonImage: (pokemonId): string =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
 };
 
 /*
