@@ -1,3 +1,4 @@
+import { HomeModule } from './components/home.module';
 import { FavoriteEntityService } from './services/favorite-pokemons/favorite-entity.service';
 import { FetchedPokemonsDataService } from './services/fetched-pokemons/fetched-pokemons-data.service';
 import { FetchedPokemonsEntityService } from './services/fetched-pokemons/fetched-pokemons-entity.service';
@@ -43,20 +44,12 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BannerComponent,
-    NavBarComponent,
-    CardListComponent,
-    SingleCardOverviewComponent,
-    MultipleCardOverviewComponent,
-  ],
+  declarations: [AppComponent, BannerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule,
 
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
@@ -65,15 +58,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
       maxAge: 25,
       logOnly: environment.production,
     }),
+    HomeModule,
     IvyCarouselModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatGridListModule,
-    InfiniteScrollModule,
-    NgxUiLoaderModule,
   ],
   providers: [
     PokemonsResolver,
