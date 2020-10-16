@@ -1,3 +1,4 @@
+import { GraphService } from './../services/graphs/graph.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntityDataService } from '@ngrx/data';
@@ -19,6 +20,7 @@ import { PokemonsResolver } from '../ngrx/pokemons.resolver';
     FetchedPokemonsEntityService,
     FetchedPokemonsDataService,
     FavoriteEntityService,
+    GraphService,
   ],
 })
 export class CoreModule {

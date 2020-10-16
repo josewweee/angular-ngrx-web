@@ -2,7 +2,7 @@ import { details } from '../../../models/multiple-card-overview/details';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import * as CanvasJS from '../../../shared/canvasjs.min.js';
+import { GraphService } from 'src/app/services/graphs/graph.service';
 
 @Component({
   selector: 'app-multiple-card-overview',
@@ -18,10 +18,12 @@ export class MultipleCardOverviewComponent implements OnInit {
   pokemon2: Pokemon;
   pokemonsDetails: details[];
   chartHeight: string;
+  graph;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
-    private dialogRef: MatDialogRef<MultipleCardOverviewComponent>
+    private dialogRef: MatDialogRef<MultipleCardOverviewComponent>,
+    private graphService: GraphService
   ) {
     this.title1 = data.pokemon1.name;
     this.title2 = data.pokemon2.name;
@@ -29,6 +31,7 @@ export class MultipleCardOverviewComponent implements OnInit {
     this.pokemonImage2 = data.pokemon2.photo;
     this.pokemon1 = data.pokemon1;
     this.pokemon2 = data.pokemon2;
+    this.graph = graphService.Generate();
   }
 
   ngOnInit(): void {
@@ -51,7 +54,7 @@ export class MultipleCardOverviewComponent implements OnInit {
       },
     ];
 
-    CanvasJS.addColorSet('green', [
+    this.graph.addColorSet('green', [
       '#38786a',
       '#38786a',
       '#38786a',
@@ -67,7 +70,7 @@ export class MultipleCardOverviewComponent implements OnInit {
   }
 
   createchart() {
-    let chart = new CanvasJS.Chart('chartContainer', {
+    let chart = new this.graph.Chart('chartContainer', {
       animationEnabled: true,
       exportEnabled: true,
       colorSet: 'green',
