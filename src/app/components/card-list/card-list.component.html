@@ -1,4 +1,4 @@
-<app-nav-bar (Searching)="filterData($event)"></app-nav-bar>
+<app-nav-bar (searching)="filterPokemons($event)"></app-nav-bar>
 <ngx-ui-loader></ngx-ui-loader>
 
 <div class="container">
@@ -9,7 +9,9 @@
     >
       <span class="comparing-alert-header">Comparing pokemon</span>
       <hr class="comparing-alert-separation" />
-      <span class="comparing-alert-body">Charizard</span>
+      <span class="comparing-alert-body" *ngIf="isComparing == true">{{
+        pokemonBeforeComparing.name
+      }}</span>
     </mat-card>
   </div>
 
@@ -22,7 +24,7 @@
         </button>
       </mat-card-actions>
       <div (click)="openPokemonDialog(pokemon)">
-        <img mat-card-image src="{{ pokemon.photo }}" />
+        <img mat-card-image [src]="pokemon.photo" />
         <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
       </div>
     </mat-card>

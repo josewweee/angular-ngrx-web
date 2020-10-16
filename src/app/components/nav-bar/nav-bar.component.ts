@@ -6,7 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-  @Output('Searching') changeEvent = new EventEmitter();
+  @Output('searching') changeEvent = new EventEmitter();
   queryInput: string = undefined;
 
   constructor() {}

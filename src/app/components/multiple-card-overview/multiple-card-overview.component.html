@@ -14,18 +14,10 @@
       <div class="body-img">
         <mat-grid-list cols="2" rowHeight="1:1">
           <mat-grid-tile [rowspan]="1">
-            <img
-              mat-card-image
-              class="body-img-item"
-              src="{{ pokemonImage1 }}"
-            />
+            <img mat-card-image class="body-img-item" [src]="pokemonImage1" />
           </mat-grid-tile>
           <mat-grid-tile [rowspan]="1">
-            <img
-              mat-card-image
-              class="body-img-item"
-              src="{{ pokemonImage2 }}"
-            />
+            <img mat-card-image class="body-img-item" [src]="pokemonImage2" />
           </mat-grid-tile>
         </mat-grid-list>
       </div>
