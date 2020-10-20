@@ -99,7 +99,7 @@ export class CardListComponent implements OnInit, OnDestroy {
       first(),
       tap(() => {
         if (removingFavorite) {
-          const newPokemon = { ...pokemon, isFavorite: false };
+          const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };
           const updatedPokemon: Update<PokemonsPage> = {
             id: pokemon.id,
             changes: newPokemon
@@ -112,7 +112,7 @@ export class CardListComponent implements OnInit, OnDestroy {
           if (favoritesLength !== undefined && favoritesLength >= 5) {
             console.warn(`Favorite Limit Reached`);
           } else {
-            const newPokemon = { ...pokemon, isFavorite: true };
+            const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
             const updatedPokemon: Update<PokemonsPage> = {
               id: pokemon.id,
               changes: newPokemon

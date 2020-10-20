@@ -5,7 +5,8 @@ import * as CanvasJS from '../../shared/canvasjs.min.js';
   providedIn: 'root',
 })
 export class GraphService {
-  constructor() {}
+  constructor() {
+  }
 
   Generate() {
     return CanvasJS;

@@ -17,6 +17,11 @@
 .nav-bar-list-item {
   margin-right: 1rem;
   font-weight: 400;
+  cursor: pointer;
+}
+
+.nav-bar-list-item:focus {
+  outline: none;
 }
 
 .active {
