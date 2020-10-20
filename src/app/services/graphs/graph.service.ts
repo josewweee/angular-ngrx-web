@@ -8,7 +8,7 @@ export class GraphService {
   constructor() {
   }
 
-  Generate() {
+  Generate(): CanvasJS.Chart {
     return CanvasJS;
   }
 }

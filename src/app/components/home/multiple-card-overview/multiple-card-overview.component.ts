@@ -2,7 +2,7 @@ import { details } from '../../../models/multiple-card-overview/details';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GraphService } from 'src/app/services/graphs/graph.service';
+import * as CanvasJS from '../../../shared/canvasjs.min.js';
 
 @Component({
   selector: 'app-multiple-card-overview',
@@ -18,12 +18,11 @@ export class MultipleCardOverviewComponent implements OnInit {
   pokemon2: Pokemon;
   pokemonsDetails: details[];
   chartHeight: string;
-  graph;
+  graph: CanvasJS;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private dialogRef: MatDialogRef<MultipleCardOverviewComponent>,
-    private graphService: GraphService
   ) {
     this.title1 = data.pokemon1.name;
     this.title2 = data.pokemon2.name;
@@ -31,7 +30,7 @@ export class MultipleCardOverviewComponent implements OnInit {
     this.pokemonImage2 = data.pokemon2.photo;
     this.pokemon1 = data.pokemon1;
     this.pokemon2 = data.pokemon2;
-    this.graph = graphService.Generate();
+    this.graph = CanvasJS;
   }
 
   ngOnInit(): void {
@@ -85,6 +84,7 @@ export class MultipleCardOverviewComponent implements OnInit {
         {
           type: 'column',
           color: 'gold',
+          // @ts-ignore
           dataPoints: [
             { y: this.pokemon1.stats[0].base_stat, label: 'hp' },
             // @ts-ignore

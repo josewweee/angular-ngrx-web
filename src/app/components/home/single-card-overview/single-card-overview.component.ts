@@ -5,12 +5,12 @@ import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GraphService } from 'src/app/services/graphs/graph.service';
-import { first, map, take, tap } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { Subscription, noop } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { removeFavorite } from 'src/app/ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
+import * as CanvasJS from '../../../shared/canvasjs.min.js';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -25,12 +25,11 @@ export class SingleCardOverviewComponent implements OnInit {
   title: string;
   chartHeight: string;
   favoriteSubscription: Subscription;
-  graph;
+  graph: CanvasJS;
 
   constructor(
     private dialogRef: MatDialogRef<SingleCardOverviewComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    private graphService: GraphService,
     private store: Store
   ) {
     this.pokemon = data.pokemon;
@@ -38,7 +37,7 @@ export class SingleCardOverviewComponent implements OnInit {
     this.favoriteStatus = data.pokemonPageInfo.isFavorite;
     this.title = data.pokemonPageInfo.name;
     this.pokemonImage = data.pokemonPageInfo.photo;
-    this.graph = graphService.Generate();
+    this.graph = CanvasJS;
   }
 
   ngOnInit(): void {
@@ -79,6 +78,7 @@ export class SingleCardOverviewComponent implements OnInit {
       data: [
         {
           type: 'column',
+          // @ts-ignore
           dataPoints: [
 
             { y: this.pokemon.stats[0].base_stat, label: 'hp' },
