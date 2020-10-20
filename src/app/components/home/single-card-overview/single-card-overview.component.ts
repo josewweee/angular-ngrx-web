@@ -80,11 +80,17 @@ export class SingleCardOverviewComponent implements OnInit {
         {
           type: 'column',
           dataPoints: [
+
             { y: this.pokemon.stats[0].base_stat, label: 'hp' },
+            // @ts-ignore
             { y: this.pokemon.stats[1].base_stat, label: 'attack' },
+            // @ts-ignore
             { y: this.pokemon.stats[2].base_stat, label: 'defense' },
+            // @ts-ignore
             { y: this.pokemon.stats[3].base_stat, label: 'sp-attack' },
+            // @ts-ignore
             { y: this.pokemon.stats[4].base_stat, label: 'sp-defense' },
+            // @ts-ignore
             { y: this.pokemon.stats[5].base_stat, label: 'speed' },
           ],
         },

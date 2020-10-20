@@ -1,22 +1,48 @@
 export interface Pokemon {
-  abilities: any[];
+  abilities: [
+    {
+      ability: {
+        name: string;
+        url: string;
+      },
+      is_hidden: boolean;
+      slot: number;
+    }
+  ]
   base_experience: number;
-  forms: any[];
-  game_indices: any[];
   height: number;
-  held_items: any[];
   id: number;
   is_default: boolean;
   location_area_encounters: string;
-  moves: any[];
   name: string;
   order: number;
-  species: any;
-  sprites: any;
-  stats: any[];
-  types: any[];
+  species: {
+    name: string;
+    url: string;
+  };
+  stats: [
+    {
+      base_stat: number,
+      effort: number,
+      stat: {
+        name: string,
+        url: string
+      }
+    },
+  ];
+  types: [
+    {
+      slot: number,
+      type: {
+        name: string,
+        url: string
+      }
+    }
+  ];
   weight: number;
   gender?: string;
-  flavor_text?: any;
+  flavor_text?: {
+    flavor_text: string;
+  };
   photo?: string;
 }
