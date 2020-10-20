@@ -1,10 +1,16 @@
-import { FavoriteEntityService } from '../../../services/favorite-pokemons/favorite-entity.service';
+import { addFavorite } from './../../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
+import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons.actions';
+import { selectAllFavoritePokemons } from '../../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PokemonEntityService } from '../../../services/pokemons-page/pokemon-entity.service';
 import { GraphService } from 'src/app/services/graphs/graph.service';
+import { map, take, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { Subscription, noop } from 'rxjs';
+import { Update } from '@ngrx/entity';
+import { removeFavorite } from 'src/app/ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -18,14 +24,14 @@ export class SingleCardOverviewComponent implements OnInit {
   favoriteStatus: boolean;
   title: string;
   chartHeight: string;
+  favoriteSubscription: Subscription;
   graph: any;
 
   constructor(
     private dialogRef: MatDialogRef<SingleCardOverviewComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    private favoriteService: FavoriteEntityService,
-    private pokemonsFetchService: PokemonEntityService,
-    private graphService: GraphService
+    private graphService: GraphService,
+    private store: Store
   ) {
     this.pokemon = data.pokemon;
     this.pokemonPageInfo = data.pokemonPageInfo;
@@ -49,7 +55,7 @@ export class SingleCardOverviewComponent implements OnInit {
     this.createchart();
   }
 
-  onClose(data) {
+  onClose(data: Pokemon) {
     if (data !== null) {
       let pokemon = { ...data };
       pokemon.photo = this.pokemonImage;
@@ -89,30 +95,49 @@ export class SingleCardOverviewComponent implements OnInit {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    let favoritesLength = undefined;
-    let removingFavorite = false;
+    let favoritesLength: number;
+    let removingFavorite: boolean = false;
 
-    this.favoriteService.entities$.subscribe((entities) => {
-      favoritesLength = entities.length;
-      if (entities.find((item) => item.name == pokemon.name)) {
-        removingFavorite = true;
-      }
-    });
+    this.favoriteSubscription = this.store.pipe(
+      select(selectAllFavoritePokemons),
+      map( (favorites) => {
+        favoritesLength = favorites.length;
 
-    if (removingFavorite) {
-      const newPokemon = { ...pokemon, isFavorite: false };
-      this.favoriteStatus = false;
-      this.pokemonsFetchService.updateOneInCache(newPokemon);
-      this.favoriteService.removeOneFromCache(pokemon);
-    } else {
-      if (favoritesLength !== undefined && favoritesLength >= 5) {
-        alert(`Favorite Limit Reached`);
-      } else {
-        const newPokemon = { ...pokemon, isFavorite: true };
-        this.favoriteStatus = true;
-        this.pokemonsFetchService.updateOneInCache(newPokemon);
-        this.favoriteService.addOneToCache(pokemon);
-      }
-    }
+        if(favorites.some((item) => item.name === pokemon.name)) {
+          removingFavorite = true;
+        }
+      }),
+      take(1),
+      tap(() => {
+        console.log(removingFavorite);
+        if (removingFavorite) {
+          const newPokemon = { ...pokemon, isFavorite: false };
+          const updatedPokemon: Update<PokemonsPage> = {
+            id: pokemon.id,
+            changes: newPokemon
+          }
+          this.favoriteStatus = false;
+          const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
+          const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
+          this.store.dispatch(newActionRemovingFavorite);
+          this.store.dispatch(newActionChangeFavoriteStatus);
+        } else {
+          if (favoritesLength !== undefined && favoritesLength >= 5) {
+            console.warn(`Favorite Limit Reached`);
+          } else {
+            const newPokemon = { ...pokemon, isFavorite: true };
+            const updatedPokemon: Update<PokemonsPage> = {
+              id: pokemon.id,
+              changes: newPokemon
+            }
+            this.favoriteStatus = true;
+            const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
+            const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
+            this.store.dispatch(newActionAddingFavorite);
+            this.store.dispatch(newActionChangeFavoriteStatus);
+          }
+        }
+      })
+    ).subscribe(noop, ()=> this.favoriteSubscription.unsubscribe())
   }
 }

@@ -1,9 +1,12 @@
+import { selectAllFavoritePokemons } from './../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { imagesPath } from './../../models/banner/imagesPath';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { environment } from './../../../environments/environment';
 import { initialValues } from './banner.constants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favorite-entity.service';
+import { Store, select } from '@ngrx/store';
+import { take, tap } from 'rxjs/operators';
+import { addMultipleFavorite } from 'src/app/ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
 
 @Component({
   selector: 'app-banner',
@@ -13,13 +16,13 @@ import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favori
 export class BannerComponent implements OnInit, OnDestroy {
   images: imagesPath[] = [
     {
-      path: environment.initialFavoritePokemonImages[0],
+      path: `${environment.pokemonImage}1.png`,
     },
     {
-      path: environment.initialFavoritePokemonImages[1],
+      path: `${environment.pokemonImage}4.png`,
     },
     {
-      path: environment.initialFavoritePokemonImages[2],
+      path: `${environment.pokemonImage}7.png`,
     },
   ];
 
@@ -27,7 +30,7 @@ export class BannerComponent implements OnInit, OnDestroy {
 
   favoritePokemons$: Subscription;
 
-  constructor(private favoriteEntityService: FavoriteEntityService) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.updateFavoritePokemonsImages();
@@ -35,22 +38,27 @@ export class BannerComponent implements OnInit, OnDestroy {
   }
 
   updateFavoritePokemonsImages() {
-    this.favoritePokemons$ = this.favoriteEntityService.entities$.subscribe(
-      (data) => {
+   this.favoritePokemons$ = this.store.pipe(
+    select(selectAllFavoritePokemons),
+      take(1),
+      tap((data) => {
         this.favoritesLength = data.length;
-        if (this.favoritesLength > 0) {
+        if (this. favoritesLength> 0) {
           this.images = [];
           data.map((item) => {
             this.images.push({ path: item.photo });
           });
+          return this.images;
         }
       }
-    );
+      )
+    ).subscribe();
   }
 
   initializeDefaultFavoritePokemons() {
     if (this.favoritesLength === 0) {
-      this.favoriteEntityService.addManyToCache(initialValues);
+      const newActionAddingMultipleFavorites = addMultipleFavorite({pokemons: initialValues})
+      this.store.dispatch(newActionAddingMultipleFavorites)
     }
   }
 

@@ -1,13 +1,14 @@
+import { FavoritePokemonsModule } from './components/entities-modules/favorite-pokemons.module';
+import { FetchedPokemonsModule } from './components/home/fetched-pokemons.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
-import { EntityDataModule } from '@ngrx/data';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { entityMetadata } from './ngrx/entity-metadata';
+import { reducers } from './ngrx/reducers/index'
 
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './components/home/home.module';
@@ -27,14 +28,15 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
     BrowserAnimationsModule,
     HttpClientModule,
 
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(reducers,{}),
     EffectsModule.forRoot([]),
-    EntityDataModule.forRoot({ entityMetadata: entityMetadata }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
     HomeModule,
+    FetchedPokemonsModule,
+    FavoritePokemonsModule,
     CoreModule,
     IvyCarouselModule,
   ],

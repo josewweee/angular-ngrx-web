@@ -1,3 +1,5 @@
+import { PokemonsEffects } from './../../ngrx/effects/pokemons.effects';
+import { pokemonsReducer } from './../../ngrx/reducers/pokemons.reducer';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -17,6 +19,8 @@ import { SingleCardOverviewComponent } from './single-card-overview/single-card-
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     MatGridListModule,
     InfiniteScrollModule,
     NgxUiLoaderModule,
+    StoreModule.forFeature("pokemons", pokemonsReducer),
+    EffectsModule.forFeature([PokemonsEffects]),
   ],
   exports: [
     CommonModule,
@@ -47,3 +53,4 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
   ],
 })
 export class HomeModule {}
+

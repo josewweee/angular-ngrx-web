@@ -1,4 +1,4 @@
-import { PokemonEntityService } from './../services/pokemons-page/pokemon-entity.service';
+import { arePokemonsLoaded } from './selectors/pokemons.selector';
 import { Injectable } from '@angular/core';
 import {
   Resolve,
@@ -7,21 +7,25 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { AppState } from './reducers';
+import { loadAllPokemons } from './actions/pokemons.actions';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonsResolver implements Resolve<boolean> {
-  constructor(private pokemonsFetchService: PokemonEntityService) {}
+  constructor(private store: Store<AppState>) {}
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.pokemonsFetchService.loaded$.pipe(
-      tap((loaded) => {
-        if (!loaded) {
-          this.pokemonsFetchService.getAll();
+    return this.store.pipe(
+      select(arePokemonsLoaded),
+      tap((pokemonsLoaded) => {
+        if (!pokemonsLoaded) {
+          this.store.dispatch(loadAllPokemons())
         }
       }),
-      filter((loaded) => !!loaded),
+      filter((pokemonsLoaded) => pokemonsLoaded),
       first()
     );
   }

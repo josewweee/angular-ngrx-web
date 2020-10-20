@@ -1,17 +1,25 @@
+import { Update } from '@ngrx/entity';
+import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons.actions';
+import { addFavorite, removeFavorite } from './../../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
+import { selectAllFavoritePokemons } from './../../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
+import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
+import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
+import { selectAllPokemons } from './../../../ngrx/selectors/pokemons.selector';
+import { PokemonsState } from './../../../ngrx/reducers/pokemons.reducer';
 import { SearchBarEventArgs } from '../../../models/nav-bar/search-bar-event-args';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
-import { FetchedPokemonsEntityService } from '../../../services/fetched-pokemons/fetched-pokemons-entity.service';
-import { Observable, Subscription } from 'rxjs';
+import { noop, Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PokemonEntityService } from '../../../services/pokemons-page/pokemon-entity.service';
-import { map, tap } from 'rxjs/operators';
+import { filter, first, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { defaultDialogConfig } from '../../../shared/default-dialog-config';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
-import { FavoriteEntityService } from 'src/app/services/favorite-pokemons/favorite-entity.service';
+import { ComponentType } from '@angular/cdk/portal';
+import { select, Store } from '@ngrx/store';
+import { loadNextPokemonPage } from 'src/app/ngrx/actions/pokemons.actions';
 
 @Component({
   selector: 'app-card-list',
@@ -29,25 +37,25 @@ export class CardListComponent implements OnInit, OnDestroy {
   fetchedPokemonsSubscription: Subscription;
   dialogSubscription: Subscription;
 
+  ngOnDestroyActivated$: Observable<boolean>;
+
   constructor(
-    private pokemonsEntityService: PokemonEntityService,
     private dialog: MatDialog,
-    private fetchedPokemonsEntityService: FetchedPokemonsEntityService,
-    private favoriteEntityService: FavoriteEntityService,
-    private loader: NgxUiLoaderService
+    private loader: NgxUiLoaderService,
+    private store: Store<PokemonsState>
   ) {}
 
   ngOnInit(): void {
     this.loadStoredPokemons();
 
-    this.pokemonsEntityService.entities$.pipe(
-      tap((item) => {
-        this.pokemonApiOffset = item.length + '';
-      })
+    this.store.pipe(
+      select(selectAllPokemons),
+      tap( pokemons => this.pokemonApiOffset = pokemons.length + '')
     );
   }
 
   ngOnDestroy() {
+    //this.ngOnDestroyActivated$ =  new Observable( (observer)=> observer.complete())
     this.tryToUnsuscribe(this.favoriteSubscription);
     this.tryToUnsuscribe(this.fetchedPokemonsSubscription);
     this.tryToUnsuscribe(this.dialogSubscription);
@@ -60,15 +68,16 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   loadStoredPokemons() {
-    this.pokemonsPage$ = this.pokemonsEntityService.entities$.pipe(
-      map((pokemons) => pokemons)
+    this.pokemonsPage$ = this.store.pipe(
+      select(selectAllPokemons)
     );
   }
 
   filterPokemons(data: SearchBarEventArgs) {
     this.queryParams = data.newValue;
     if (this.queryParams !== '' && this.queryParams !== undefined) {
-      this.pokemonsPage$ = this.pokemonsEntityService.entities$.pipe(
+      this.pokemonsPage$ = this.store.pipe(
+        select(selectAllPokemons),
         map((pokemons) =>
           pokemons.filter((item) => item.name.includes(this.queryParams))
         )
@@ -79,51 +88,63 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    let favoritesLength = undefined;
-    let removingFavorite = false;
+    let favoritesLength: number;
+    let removingFavorite: boolean = false;
 
-    this.favoriteSubscription = this.favoriteEntityService.entities$.subscribe(
-      (entities) => {
-        favoritesLength = entities.length;
+    this.favoriteSubscription = this.store.pipe(
+      select(selectAllFavoritePokemons),
+      map( (favorites) => {
+        favoritesLength = favorites.length;
 
-        if (entities.some((item) => item.name == pokemon.name)) {
+        if(favorites.some((item) => item.name === pokemon.name)) {
           removingFavorite = true;
         }
-      }
-    );
-    if (removingFavorite) {
-      const newPokemon = { ...pokemon, isFavorite: false };
-      this.pokemonsEntityService.updateOneInCache(newPokemon);
-      this.favoriteEntityService.removeOneFromCache(pokemon);
-    } else {
-      if (favoritesLength !== undefined && favoritesLength >= 5) {
-        alert(`Favorite Limit Reached`);
-      } else {
-        const newPokemon = { ...pokemon, isFavorite: true };
-        this.pokemonsEntityService.updateOneInCache(newPokemon);
-        this.favoriteEntityService.addOneToCache(pokemon);
-      }
-    }
+      }),
+      take(1),
+      tap(() => {
+        console.log(removingFavorite);
+        if (removingFavorite) {
+          const newPokemon = { ...pokemon, isFavorite: false };
+          const updatedPokemon: Update<PokemonsPage> = {
+            id: pokemon.id,
+            changes: newPokemon
+          }
+          const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
+          const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
+          this.store.dispatch(newActionRemovingFavorite);
+          this.store.dispatch(newActionChangeFavoriteStatus);
+        } else {
+          if (favoritesLength !== undefined && favoritesLength >= 5) {
+            console.warn(`Favorite Limit Reached`);
+          } else {
+            const newPokemon = { ...pokemon, isFavorite: true };
+            const updatedPokemon: Update<PokemonsPage> = {
+              id: pokemon.id,
+              changes: newPokemon
+            }
+            const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
+            const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
+            this.store.dispatch(newActionAddingFavorite);
+            this.store.dispatch(newActionChangeFavoriteStatus);
+          }
+        }
+      })
+    ).subscribe(noop, ()=> this.favoriteSubscription.unsubscribe())
   }
 
   loadMorePokemons() {
-    this.pokemonsEntityService.getWithQuery({
-      limit: '20',
-      id: this.pokemonApiOffset,
-    });
+    const newLoadPageAction = loadNextPokemonPage({ offset: this.pokemonApiOffset });
+    this.store.dispatch(newLoadPageAction)
     let nextOffsetInt = parseInt(this.pokemonApiOffset) + 20;
     this.pokemonApiOffset = nextOffsetInt.toFixed(0);
   }
 
-  async openPokemonDialog(pokemon) {
+  async openPokemonDialog(pokemon: PokemonsPage) {
     const dialogConfig = defaultDialogConfig();
-
-    let pokemonData: Pokemon;
-    pokemonData = this.searchForPokemonInStorage(pokemon);
-
+    let pokemonData: Pokemon = await this.searchForPokemonInStorage(pokemon)
     if (
       pokemonData === undefined ||
-      pokemonData.name == undefined ||
+      pokemonData.name === undefined ||
       !pokemonData
     ) {
       pokemonData = await this.fetchPokemon(pokemon);
@@ -144,32 +165,55 @@ export class CardListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchForPokemonInStorage(pokemon: PokemonsPage): Pokemon {
+  //REMOVER SUBSCRIPCIONES Y ELIMINAR PROMESA
+  async searchForPokemonInStorage(pokemon: PokemonsPage): Promise<Pokemon> {
     let pokemonData: Pokemon;
-    this.fetchedPokemonsSubscription = this.fetchedPokemonsEntityService.entities$.subscribe(
-      (entity) => {
-        let data = entity.filter((item) => item.name === pokemon.name);
-        pokemonData = data[0];
-      }
-    );
-    return pokemonData;
+    return new Promise( (resolve, reject) => {
+      console.log(`buscando`);
+      this.store.pipe(
+        select(selectAllFetchedPokemons),
+        map(pokemons => {
+          let data = pokemons.find((item) => item.name === pokemon.name);
+          pokemonData = data;
+
+          resolve(pokemonData);
+          console.log(pokemonData);
+        })
+      ).subscribe()
+    })
   }
 
-  async fetchPokemon(pokemon: PokemonsPage) {
-    let fetchedPokemon: Pokemon;
-    this.loader.start();
-    fetchedPokemon = await this.fetchedPokemonsEntityService
-      .getByKey(pokemon.url)
-      .toPromise();
-    this.loader.stop();
-    return fetchedPokemon;
+  async fetchPokemon(pokemon: PokemonsPage): Promise<Pokemon> {
+    return new Promise( (resolve, reject) => {
+      let fetchedPokemon: Pokemon;
+      this.loader.start();
+      const newFetchPokemonAction = fetchPokemon({pokemonUrl: pokemon.url})
+      this.store.dispatch(newFetchPokemonAction)
+
+      this.store.pipe(
+        select(fetchingInProcess),
+        tap( fetchingInProcess => {
+          if(fetchingInProcess === false)
+          {
+            this.store.pipe(
+              select(selectAllFetchedPokemons),
+              tap( pokemons => {
+                fetchedPokemon = pokemons.find(item => item.name === pokemon.name)
+                this.loader.stop();
+                resolve(fetchedPokemon)
+              })
+            ).subscribe();
+          }
+        })
+      ).subscribe();
+    })
   }
 
-  createDialog(component, dialogConfig) {
+  createDialog(component: ComponentType<any>, dialogConfig: MatDialogConfig) {
     this.dialogSubscription = this.dialog
-      .open(component, dialogConfig)
-      .afterClosed()
-      .subscribe((data: Pokemon) => {
+    .open(component, dialogConfig)
+    .afterClosed()
+    .subscribe((data: Pokemon) => {
         if (data !== null) {
           this.pokemonBeforeComparing = data;
           this.isComparing = true;
@@ -179,4 +223,3 @@ export class CardListComponent implements OnInit, OnDestroy {
       });
   }
 }
-// SingleCardOverviewComponent
