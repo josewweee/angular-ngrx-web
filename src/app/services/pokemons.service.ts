@@ -69,7 +69,6 @@ export class PokemonService {
     return this.http.get(url);
   }
 
-  //POKEMON INDIVIDUAL
   getById(url: string): Observable<Pokemon> {
     return this.request(url).pipe(
       switchMap((response: Pokemon) => {
