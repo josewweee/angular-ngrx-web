@@ -25,7 +25,7 @@ export class SingleCardOverviewComponent implements OnInit {
   title: string;
   chartHeight: string;
   favoriteSubscription: Subscription;
-  graph: any;
+  graph;
 
   constructor(
     private dialogRef: MatDialogRef<SingleCardOverviewComponent>,
