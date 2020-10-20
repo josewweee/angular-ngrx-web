@@ -1,12 +1,12 @@
 import { addFavorite } from './../../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
-import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons.actions';
+import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons-page/pokemons.actions';
 import { selectAllFavoritePokemons } from '../../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GraphService } from 'src/app/services/graphs/graph.service';
-import { map, take, tap } from 'rxjs/operators';
+import { first, map, take, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { Subscription, noop } from 'rxjs';
 import { Update } from '@ngrx/entity';
@@ -107,9 +107,8 @@ export class SingleCardOverviewComponent implements OnInit {
           removingFavorite = true;
         }
       }),
-      take(1),
+      first(),
       tap(() => {
-        console.log(removingFavorite);
         if (removingFavorite) {
           const newPokemon = { ...pokemon, isFavorite: false };
           const updatedPokemon: Update<PokemonsPage> = {
@@ -138,6 +137,6 @@ export class SingleCardOverviewComponent implements OnInit {
           }
         }
       })
-    ).subscribe(noop, ()=> this.favoriteSubscription.unsubscribe())
+    ).subscribe()
   }
 }

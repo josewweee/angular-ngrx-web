@@ -1,5 +1,5 @@
-import { FavoritePokemonsModule } from './components/entities-modules/favorite-pokemons.module';
-import { FetchedPokemonsModule } from './components/home/fetched-pokemons.module';
+import { FavoritePokemonsModule } from './core/entities-modules/favorite-pokemons.module';
+import { FetchedPokemonsModule } from './core/entities-modules/fetched-pokemons.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { reducers } from './ngrx/reducers/index'
+import { reducers } from './ngrx/reducers/pokemons-page/index'
 
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './components/home/home.module';

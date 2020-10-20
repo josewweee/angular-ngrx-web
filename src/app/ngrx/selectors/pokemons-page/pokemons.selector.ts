@@ -1,4 +1,4 @@
-import { adapterSelectors, PokemonsState } from './../reducers/pokemons.reducer';
+import { adapterSelectors, PokemonsState } from '../../reducers/pokemons-page/pokemons.reducer';
 import { createSelector } from "@ngrx/store";
 import { createFeatureSelector } from "@ngrx/store";
 

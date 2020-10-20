@@ -1,9 +1,9 @@
-import { allPokemonsLoaded, nextPageLoaded } from '../actions/pokemons.actions';
-import { PokemonService } from './../../services/pokemons.service';
+import { allPokemonsLoaded, nextPageLoaded } from '../../actions/pokemons-page/pokemons.actions';
+import { PokemonService } from '../../../services/pokemons.service';
 import { map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { PokemonsActions } from "../actions/action-types";
+import { PokemonsActions } from "../../actions/pokemons-page/action-types";
 import { concatMap } from "rxjs/operators";
 
 @Injectable()

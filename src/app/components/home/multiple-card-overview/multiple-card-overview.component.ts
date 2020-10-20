@@ -18,7 +18,7 @@ export class MultipleCardOverviewComponent implements OnInit {
   pokemon2: Pokemon;
   pokemonsDetails: details[];
   chartHeight: string;
-  graph;
+  graph: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,

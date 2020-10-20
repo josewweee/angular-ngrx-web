@@ -1,11 +1,11 @@
 import { Update } from '@ngrx/entity';
-import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons.actions';
+import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons-page/pokemons.actions';
 import { addFavorite, removeFavorite } from './../../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
 import { selectAllFavoritePokemons } from './../../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
 import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
-import { selectAllPokemons } from './../../../ngrx/selectors/pokemons.selector';
-import { PokemonsState } from './../../../ngrx/reducers/pokemons.reducer';
+import { selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
+import { PokemonsState } from '../../../ngrx/reducers/pokemons-page/pokemons.reducer';
 import { SearchBarEventArgs } from '../../../models/nav-bar/search-bar-event-args';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
@@ -19,7 +19,7 @@ import { SingleCardOverviewComponent } from '../single-card-overview/single-card
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
 import { ComponentType } from '@angular/cdk/portal';
 import { select, Store } from '@ngrx/store';
-import { loadNextPokemonPage } from 'src/app/ngrx/actions/pokemons.actions';
+import { loadNextPokemonPage } from 'src/app/ngrx/actions/pokemons-page/pokemons.actions';
 
 @Component({
   selector: 'app-card-list',
@@ -33,8 +33,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   pokemonApiOffset: string = '20';
   queryParams: string = '';
 
-  favoriteSubscription: Subscription;
-  fetchedPokemonsSubscription: Subscription;
+  fetchingToApiSubscription: Subscription;
   dialogSubscription: Subscription;
 
   ngOnDestroyActivated$: Observable<boolean>;
@@ -55,10 +54,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.ngOnDestroyActivated$ =  new Observable( (observer)=> observer.complete())
-    this.tryToUnsuscribe(this.favoriteSubscription);
-    this.tryToUnsuscribe(this.fetchedPokemonsSubscription);
-    this.tryToUnsuscribe(this.dialogSubscription);
+    this.tryToUnsuscribe(this.fetchingToApiSubscription);
   }
 
   tryToUnsuscribe(variable: Subscription) {
@@ -91,7 +87,7 @@ export class CardListComponent implements OnInit, OnDestroy {
     let favoritesLength: number;
     let removingFavorite: boolean = false;
 
-    this.favoriteSubscription = this.store.pipe(
+    this.store.pipe(
       select(selectAllFavoritePokemons),
       map( (favorites) => {
         favoritesLength = favorites.length;
@@ -100,9 +96,8 @@ export class CardListComponent implements OnInit, OnDestroy {
           removingFavorite = true;
         }
       }),
-      take(1),
+      first(),
       tap(() => {
-        console.log(removingFavorite);
         if (removingFavorite) {
           const newPokemon = { ...pokemon, isFavorite: false };
           const updatedPokemon: Update<PokemonsPage> = {
@@ -129,7 +124,7 @@ export class CardListComponent implements OnInit, OnDestroy {
           }
         }
       })
-    ).subscribe(noop, ()=> this.favoriteSubscription.unsubscribe())
+    ).subscribe()
   }
 
   loadMorePokemons() {
@@ -165,19 +160,16 @@ export class CardListComponent implements OnInit, OnDestroy {
     }
   }
 
-  //REMOVER SUBSCRIPCIONES Y ELIMINAR PROMESA
   async searchForPokemonInStorage(pokemon: PokemonsPage): Promise<Pokemon> {
     let pokemonData: Pokemon;
     return new Promise( (resolve, reject) => {
-      console.log(`buscando`);
       this.store.pipe(
         select(selectAllFetchedPokemons),
+        first(),
         map(pokemons => {
           let data = pokemons.find((item) => item.name === pokemon.name);
           pokemonData = data;
-
           resolve(pokemonData);
-          console.log(pokemonData);
         })
       ).subscribe()
     })
@@ -190,13 +182,14 @@ export class CardListComponent implements OnInit, OnDestroy {
       const newFetchPokemonAction = fetchPokemon({pokemonUrl: pokemon.url})
       this.store.dispatch(newFetchPokemonAction)
 
-      this.store.pipe(
+      this.fetchingToApiSubscription = this.store.pipe(
         select(fetchingInProcess),
         tap( fetchingInProcess => {
           if(fetchingInProcess === false)
           {
             this.store.pipe(
               select(selectAllFetchedPokemons),
+              first(),
               tap( pokemons => {
                 fetchedPokemon = pokemons.find(item => item.name === pokemon.name)
                 this.loader.stop();
@@ -204,7 +197,7 @@ export class CardListComponent implements OnInit, OnDestroy {
               })
             ).subscribe();
           }
-        })
+        }),
       ).subscribe();
     })
   }
@@ -213,13 +206,17 @@ export class CardListComponent implements OnInit, OnDestroy {
     this.dialogSubscription = this.dialog
     .open(component, dialogConfig)
     .afterClosed()
-    .subscribe((data: Pokemon) => {
+    .pipe(
+      tap((data: Pokemon) => {
         if (data !== null) {
           this.pokemonBeforeComparing = data;
           this.isComparing = true;
         } else {
           this.isComparing = false;
         }
-      });
+      }),
+      first()
+    )
+    .subscribe();
   }
 }

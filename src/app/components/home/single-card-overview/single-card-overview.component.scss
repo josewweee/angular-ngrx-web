@@ -94,8 +94,16 @@
 
 .dialog-footer {
   height: 100%;
-  .chart {
-    margin: auto;
-    max-width: 680px;
+
+  .chart-container {
+    height: 300px;
+    width: 100%;
+
+    .chart {
+      margin: auto;
+      max-width: 680px;
+      height: inherit;
+      width: 100%;
+    }
   }
 }

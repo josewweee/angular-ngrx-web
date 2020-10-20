@@ -1,5 +1,5 @@
-import { PokemonsEffects } from './../../ngrx/effects/pokemons.effects';
-import { pokemonsReducer } from './../../ngrx/reducers/pokemons.reducer';
+import { PokemonsEffects } from '../../ngrx/effects/pokemons-page/pokemons.effects';
+import { pokemonsReducer } from '../../ngrx/reducers/pokemons-page/pokemons.reducer';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';

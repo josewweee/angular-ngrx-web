@@ -1,4 +1,4 @@
-import { arePokemonsLoaded } from './selectors/pokemons.selector';
+import { arePokemonsLoaded } from '../selectors/pokemons-page/pokemons.selector';
 import { Injectable } from '@angular/core';
 import {
   Resolve,
@@ -8,8 +8,8 @@ import {
 import { Observable } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { AppState } from './reducers';
-import { loadAllPokemons } from './actions/pokemons.actions';
+import { AppState } from '../reducers/pokemons-page';
+import { loadAllPokemons } from '../actions/pokemons-page/pokemons.actions';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonsResolver implements Resolve<boolean> {

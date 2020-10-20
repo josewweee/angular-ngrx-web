@@ -1,4 +1,4 @@
-import { PokemonsPage } from '../../models/shared/pokemons-page';
+import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { createAction, props } from "@ngrx/store";
 import { Update } from '@ngrx/entity';
 
