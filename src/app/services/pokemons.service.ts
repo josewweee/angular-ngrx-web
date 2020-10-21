@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
-
 @Injectable({ providedIn: 'root' })
 export class PokemonService {
   constructor(private http: HttpClient) {
@@ -91,6 +90,4 @@ export class PokemonService {
       })
     );
   }
-
-
 }

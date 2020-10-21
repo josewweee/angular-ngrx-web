@@ -2,11 +2,9 @@ import { FetchedPokemonsState, adapterSelectors, adapter } from './../../reducer
 import { createSelector } from "@ngrx/store";
 import { createFeatureSelector } from "@ngrx/store";
 
-
 export const selectFetchedPokemonsState = createFeatureSelector<FetchedPokemonsState>(
   "fetchedPokemons"
 );
-
 
 export const selectAllFetchedPokemons = createSelector(
   selectFetchedPokemonsState,

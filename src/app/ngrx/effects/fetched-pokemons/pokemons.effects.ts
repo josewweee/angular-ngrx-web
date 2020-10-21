@@ -1,11 +1,10 @@
 import { selectAllFetchedPokemons } from './../../selectors/fetched-pokemons/pokemons.selector';
 import { pokemonFetched } from './../../actions/fetched-pokemons/fetched-pokemons.actions';
 import { PokemonService } from './../../../services/pokemons.service';
-import { first, map, tap } from "rxjs/operators";
+import { first, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as FetchedPokemonsActions from "../../actions/fetched-pokemons/fetched-pokemons.actions";
-import { concatMap } from "rxjs/operators";
 import { select, Store } from '@ngrx/store';
 
 @Injectable()
@@ -44,14 +43,6 @@ export class FetchedPokemonsEffects {
     ),
     { dispatch: false}
   );
-
-  /* fetchPokemon$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(FetchedPokemonsActions.fetchPokemon),
-      concatMap((action) => this.pokemonService.getById(action.pokemonUrl)),
-      map((pokemon) => pokemonFetched({ pokemon }))
-    );
-  }); */
 
   constructor(
     private actions$: Actions,

@@ -3,10 +3,7 @@ export interface Pokemon {
     {
       ability: {
         name: string;
-        url: string;
       },
-      is_hidden: boolean;
-      slot: number;
     }
   ]
   base_experience: number;
@@ -17,25 +14,32 @@ export interface Pokemon {
   name: string;
   order: number;
   species: {
-    name: string;
     url: string;
   };
   stats: [
     {
       base_stat: number,
-      effort: number,
-      stat: {
-        name: string,
-        url: string
-      }
+    },
+    {
+      base_stat: number,
+    },
+    {
+      base_stat: number,
+    },
+    {
+      base_stat: number,
+    },
+    {
+      base_stat: number,
+    },
+    {
+      base_stat: number,
     },
   ];
   types: [
     {
-      slot: number,
       type: {
         name: string,
-        url: string
       }
     }
   ];

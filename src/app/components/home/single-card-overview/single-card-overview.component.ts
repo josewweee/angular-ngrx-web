@@ -1,15 +1,8 @@
-import { addFavorite } from './../../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
-import { changeFavoriteStatus } from './../../../ngrx/actions/pokemons-page/pokemons.actions';
-import { selectAllFavoritePokemons } from '../../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { first, map, tap } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { Update } from '@ngrx/entity';
-import { removeFavorite } from 'src/app/ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
+import { Store } from '@ngrx/store';
 import * as CanvasJS from '../../../shared/canvasjs.min.js';
 import { addFavorites } from 'src/app/shared/utils/addFavorites';
 
@@ -78,19 +71,12 @@ export class SingleCardOverviewComponent implements OnInit {
       data: [
         {
           type: 'column',
-          // @ts-ignore
           dataPoints: [
-
             { y: this.pokemon.stats[0].base_stat, label: 'hp' },
-            // @ts-ignore
             { y: this.pokemon.stats[1].base_stat, label: 'attack' },
-            // @ts-ignore
             { y: this.pokemon.stats[2].base_stat, label: 'defense' },
-            // @ts-ignore
             { y: this.pokemon.stats[3].base_stat, label: 'sp-attack' },
-            // @ts-ignore
             { y: this.pokemon.stats[4].base_stat, label: 'sp-defense' },
-            // @ts-ignore
             { y: this.pokemon.stats[5].base_stat, label: 'speed' },
           ],
         },

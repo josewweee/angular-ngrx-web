@@ -2,11 +2,9 @@ import { changeFavoriteStatus } from './../../ngrx/actions/pokemons-page/pokemon
 import { first, map, tap } from 'rxjs/operators';
 import { selectAllFavoritePokemons } from './../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { PokemonsPage } from './../../models/shared/pokemons-page';
-import { Subscription } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { addFavorite, removeFavorite } from '../../ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
-
 
 export function addFavorites(pokemon: PokemonsPage, store: Store): favoritesAddedResponse {
   let favoritesLength: number;
@@ -17,6 +15,7 @@ export function addFavorites(pokemon: PokemonsPage, store: Store): favoritesAdde
 
   store.pipe(
     select(selectAllFavoritePokemons),
+    first(),
     map( (favorites: PokemonsPage[]) => {
       favoritesLength = favorites.length;
 
@@ -24,7 +23,6 @@ export function addFavorites(pokemon: PokemonsPage, store: Store): favoritesAdde
         removingFavorite = true;
       }
     }),
-    first(),
     tap(() => {
       if (removingFavorite) {
         const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };

@@ -84,18 +84,12 @@ export class MultipleCardOverviewComponent implements OnInit {
         {
           type: 'column',
           color: 'gold',
-          // @ts-ignore
           dataPoints: [
             { y: this.pokemon1.stats[0].base_stat, label: 'hp' },
-            // @ts-ignore
             { y: this.pokemon1.stats[1].base_stat, label: 'attack' },
-            // @ts-ignore
             { y: this.pokemon1.stats[2].base_stat, label: 'defense' },
-            // @ts-ignore
             { y: this.pokemon1.stats[3].base_stat, label: 'sp-attack' },
-            // @ts-ignore
             { y: this.pokemon1.stats[4].base_stat, label: 'sp-defense' },
-            // @ts-ignore
             { y: this.pokemon1.stats[5].base_stat, label: 'speed' },
           ],
         },
@@ -103,15 +97,10 @@ export class MultipleCardOverviewComponent implements OnInit {
           type: 'column',
           dataPoints: [
             { y: this.pokemon2.stats[0].base_stat, label: 'hp' },
-            // @ts-ignore
             { y: this.pokemon2.stats[1].base_stat, label: 'attack' },
-            // @ts-ignore
             { y: this.pokemon2.stats[2].base_stat, label: 'defense' },
-            // @ts-ignore
             { y: this.pokemon2.stats[3].base_stat, label: 'sp-attack' },
-            // @ts-ignore
             { y: this.pokemon2.stats[4].base_stat, label: 'sp-defense' },
-            // @ts-ignore
             { y: this.pokemon2.stats[5].base_stat, label: 'speed' },
           ],
         },
