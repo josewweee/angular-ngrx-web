@@ -15,5 +15,6 @@ export const selectAllPokemons = createSelector(
 
 export const arePokemonsLoaded = createSelector(
   selectPokemonsState,
-  (state) => state.allPokemonsLoaded
+  (state) => {
+    return state.allPokemonsLoaded}
 );

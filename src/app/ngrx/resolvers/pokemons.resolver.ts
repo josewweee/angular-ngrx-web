@@ -20,10 +20,8 @@ export class PokemonsResolver implements Resolve<boolean> {
   ): Observable<boolean> {
     return this.store.pipe(
       select(arePokemonsLoaded),
-      tap((pokemonsLoaded) => {
-        if (!pokemonsLoaded) {
-          this.store.dispatch(loadAllPokemons())
-        }
+      tap( ()=> {
+        this.store.dispatch(loadAllPokemons())
       }),
       filter((pokemonsLoaded) => pokemonsLoaded),
       first()

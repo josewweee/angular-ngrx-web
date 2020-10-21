@@ -1,4 +1,3 @@
-import { FavoritePokemonsEffects } from './../../ngrx/effects/favorite-pokemons/favorite-pokemons.effects';
 import { FavoritePokemonsReducer } from './../../ngrx/reducers/favorite-pokemons/favorite-pokemons.reducer';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
   imports: [
     CommonModule,
     StoreModule.forFeature('favoritePokemons', FavoritePokemonsReducer),
-    EffectsModule.forFeature([FavoritePokemonsEffects]),
+    EffectsModule.forFeature([]),
   ]
 })
 export class FavoritePokemonsModule { }

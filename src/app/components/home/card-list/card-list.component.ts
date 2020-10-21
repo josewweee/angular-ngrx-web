@@ -96,72 +96,58 @@ export class CardListComponent implements OnInit, OnDestroy {
     this.pokemonApiOffset = nextOffsetInt.toFixed(0);
   }
 
-  async openPokemonDialog(pokemon: PokemonsPage) {
-    const dialogConfig = defaultDialogConfig();
-    let pokemonData: Pokemon = await this.searchForPokemonInStorage(pokemon)
-    if (
-      pokemonData === undefined ||
-      pokemonData.name === undefined ||
-      !pokemonData
-    ) {
-      pokemonData = await this.fetchPokemon(pokemon);
-    }
+  openPokemonDialog(pokemon: PokemonsPage) {
+    const dialogConfig: MatDialogConfig = defaultDialogConfig();
+    let requestedPokemon: Pokemon;
+    let processCompleted: boolean = false;
 
-    if (this.isComparing) {
-      dialogConfig.data = {
-        pokemon1: this.pokemonBeforeComparing,
-        pokemon2: { ...pokemonData, photo: pokemon.photo },
-      };
-      this.createDialog(MultipleCardOverviewComponent, dialogConfig);
-    } else {
-      dialogConfig.data = {
-        pokemonPageInfo: pokemon,
-        pokemon: pokemonData,
-      };
-      this.createDialog(SingleCardOverviewComponent, dialogConfig);
-    }
-  }
+    this.getPokemonFromStoreOrApi(pokemon);
 
-  async searchForPokemonInStorage(pokemon: PokemonsPage): Promise<Pokemon> {
-    let pokemonData: Pokemon;
-    return new Promise( (resolve, reject) => {
-      this.store.pipe(
-        select(selectAllFetchedPokemons),
-        first(),
-        map(pokemons => {
-          let data = pokemons.find((item) => item.name === pokemon.name);
-          pokemonData = data;
-          resolve(pokemonData);
-        })
-      ).subscribe()
-    })
-  }
-
-  async fetchPokemon(pokemon: PokemonsPage): Promise<Pokemon> {
-    return new Promise( (resolve, reject) => {
-      let fetchedPokemon: Pokemon;
-      this.loader.start();
-      const newFetchPokemonAction = fetchPokemon({pokemonUrl: pokemon.url})
-      this.store.dispatch(newFetchPokemonAction)
-
-      this.fetchingToApiSubscription = this.store.pipe(
-        select(fetchingInProcess),
-        tap( fetchingInProcess => {
-          if(fetchingInProcess === false)
+    this.fetchingToApiSubscription = this.store.pipe(
+      select(fetchingInProcess),
+    ).subscribe(
+      isFetching => {
+        if(!processCompleted)
+        {
+          if(isFetching === false)
           {
+            this.loader.stop();
+            this.fetchingToApiSubscription.unsubscribe();
+            processCompleted = true;
             this.store.pipe(
               select(selectAllFetchedPokemons),
-              first(),
-              tap( pokemons => {
-                fetchedPokemon = pokemons.find(item => item.name === pokemon.name)
-                this.loader.stop();
-                resolve(fetchedPokemon)
-              })
-            ).subscribe();
+              first()
+            )
+            .subscribe(pokemons => {
+              requestedPokemon = pokemons.find(item => item.name === pokemon.name);
+              if (this.isComparing) {
+                dialogConfig.data = {
+                  pokemon1: this.pokemonBeforeComparing,
+                  pokemon2: { ...requestedPokemon, photo: pokemon.photo },
+                };
+                this.createDialog(MultipleCardOverviewComponent, dialogConfig);
+              } else {
+                dialogConfig.data = {
+                  pokemonPageInfo: pokemon,
+                  pokemon: requestedPokemon,
+                };
+                this.createDialog(SingleCardOverviewComponent, dialogConfig);
+              }
+            })
+          } else {
+            this.loader.start();
           }
-        }),
-      ).subscribe();
-    })
+        } else {
+          this.fetchingToApiSubscription.unsubscribe();
+        }
+      }
+    )
+  }
+
+  getPokemonFromStoreOrApi(pokemon: PokemonsPage){
+    const newFetchPokemonAction = fetchPokemon({pokemon: pokemon})
+    this.store.dispatch(newFetchPokemonAction)
+
   }
 
   createDialog(component: ComponentType<any>, dialogConfig: MatDialogConfig) {
