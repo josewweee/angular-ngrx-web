@@ -14,10 +14,4 @@ import { PokemonsResolver } from '../ngrx/resolvers/pokemons.resolver';
     PokemonService,
   ],
 })
-export class CoreModule {
-  constructor(
-
-  ) {
-
-  }
-}
+export class CoreModule {}

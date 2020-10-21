@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { removeFavorite } from 'src/app/ngrx/actions/favorite-pokemons/favorite-pokemons.actions';
 import * as CanvasJS from '../../../shared/canvasjs.min.js';
+import { addFavorites } from 'src/app/shared/utils/addFavorites';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -24,7 +25,6 @@ export class SingleCardOverviewComponent implements OnInit {
   favoriteStatus: boolean;
   title: string;
   chartHeight: string;
-  favoriteSubscription: Subscription;
   graph: CanvasJS;
 
   constructor(
@@ -101,48 +101,6 @@ export class SingleCardOverviewComponent implements OnInit {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    let favoritesLength: number;
-    let removingFavorite: boolean = false;
-
-    this.favoriteSubscription = this.store.pipe(
-      select(selectAllFavoritePokemons),
-      map( (favorites) => {
-        favoritesLength = favorites.length;
-
-        if(favorites.some((item) => item.name === pokemon.name)) {
-          removingFavorite = true;
-        }
-      }),
-      first(),
-      tap(() => {
-        if (removingFavorite) {
-          const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };
-          const updatedPokemon: Update<PokemonsPage> = {
-            id: pokemon.id,
-            changes: newPokemon
-          }
-          this.favoriteStatus = false;
-          const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
-          const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-          this.store.dispatch(newActionRemovingFavorite);
-          this.store.dispatch(newActionChangeFavoriteStatus);
-        } else {
-          if (favoritesLength !== undefined && favoritesLength >= 5) {
-            console.warn(`Favorite Limit Reached`);
-          } else {
-            const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
-            const updatedPokemon: Update<PokemonsPage> = {
-              id: pokemon.id,
-              changes: newPokemon
-            }
-            this.favoriteStatus = true;
-            const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
-            const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-            this.store.dispatch(newActionAddingFavorite);
-            this.store.dispatch(newActionChangeFavoriteStatus);
-          }
-        }
-      })
-    ).subscribe()
+    this.favoriteStatus = addFavorites(pokemon, this.store).status;
   }
 }

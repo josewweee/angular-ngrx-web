@@ -6,12 +6,13 @@ import { PokemonsResolver } from './ngrx/resolvers/pokemons.resolver';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'banner',
     component: BannerComponent,
   },
   {
-    path: 'banner',
-    component: BannerComponent,
+    path: '',
+    redirectTo: '/banner',
+    pathMatch: 'full'
   },
   {
     path: 'home',

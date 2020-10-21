@@ -41,7 +41,7 @@ export class PokemonService {
     );
   }
 
-  getWithQuery(offset): Observable<PokemonsPage[]> {
+  getWithQuery(offset: string): Observable<PokemonsPage[]> {
     const pageUrl = `${environment.pokemonsBaseUrl}?limit=$20&offset=${offset}`
     return this.http
       .get(pageUrl)

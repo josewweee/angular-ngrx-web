@@ -3,7 +3,7 @@ import { PokemonService } from './../../../services/pokemons.service';
 import { map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { FetchedPokemonsActions } from "../../actions/fetched-pokemons/action-types";
+import * as FetchedPokemonsActions from "../../actions/fetched-pokemons/fetched-pokemons.actions";
 import { concatMap } from "rxjs/operators";
 
 @Injectable()

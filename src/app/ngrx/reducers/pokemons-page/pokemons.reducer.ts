@@ -1,7 +1,7 @@
 import { PokemonsPage, getPokemonId } from '../../../models/shared/pokemons-page';
 import { createEntityAdapter, EntityState } from "@ngrx/entity";
 import { createReducer, on } from "@ngrx/store";
-import { PokemonsActions } from "../../actions/pokemons-page/action-types";
+import * as PokemonsActions from "../../actions/pokemons-page/pokemons.actions";
 
 export interface PokemonsState extends EntityState<PokemonsPage> {
   allPokemonsLoaded: boolean;

@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityState } from "@ngrx/entity";
 import { createReducer, on } from "@ngrx/store";
-import { FavoritePokemonsActions } from "../../actions/favorite-pokemons/action-types";
+import * as FavoritePokemonsActions from "../../actions/favorite-pokemons/favorite-pokemons.actions";
 import { getPokemonId, PokemonsPage } from '../../../models/shared/pokemons-page';
 
 export interface FavoritePokemonsState extends EntityState<PokemonsPage> {}
@@ -34,6 +34,3 @@ export const FavoritePokemonsReducer = createReducer(
 
 );
 export const adapterSelectors = adapter.getSelectors();
-
-
-

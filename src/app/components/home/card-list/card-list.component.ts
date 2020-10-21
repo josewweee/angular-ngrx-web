@@ -20,6 +20,7 @@ import { MultipleCardOverviewComponent } from '../multiple-card-overview/multipl
 import { ComponentType } from '@angular/cdk/portal';
 import { select, Store } from '@ngrx/store';
 import { loadNextPokemonPage } from 'src/app/ngrx/actions/pokemons-page/pokemons.actions';
+import { addFavorites } from '../../../shared/utils/addFavorites';
 
 @Component({
   selector: 'app-card-list',
@@ -35,6 +36,7 @@ export class CardListComponent implements OnInit, OnDestroy {
 
   fetchingToApiSubscription: Subscription;
   dialogSubscription: Subscription;
+  apiOffsetSubscription: Subscription;
 
   ngOnDestroyActivated$: Observable<boolean>;
 
@@ -47,14 +49,14 @@ export class CardListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadStoredPokemons();
 
-    this.store.pipe(
-      select(selectAllPokemons),
-      tap( pokemons => this.pokemonApiOffset = pokemons.length + '')
-    );
+    this.apiOffsetSubscription = this.store.pipe(
+      select(selectAllPokemons))
+      .subscribe( pokemons => this.pokemonApiOffset = pokemons.length + '')
   }
 
   ngOnDestroy() {
     this.tryToUnsuscribe(this.fetchingToApiSubscription);
+    this.tryToUnsuscribe(this.apiOffsetSubscription);
   }
 
   tryToUnsuscribe(variable: Subscription) {
@@ -84,47 +86,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    let favoritesLength: number;
-    let removingFavorite: boolean = false;
-
-    this.store.pipe(
-      select(selectAllFavoritePokemons),
-      map( (favorites) => {
-        favoritesLength = favorites.length;
-
-        if(favorites.some((item) => item.name === pokemon.name)) {
-          removingFavorite = true;
-        }
-      }),
-      first(),
-      tap(() => {
-        if (removingFavorite) {
-          const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };
-          const updatedPokemon: Update<PokemonsPage> = {
-            id: pokemon.id,
-            changes: newPokemon
-          }
-          const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
-          const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-          this.store.dispatch(newActionRemovingFavorite);
-          this.store.dispatch(newActionChangeFavoriteStatus);
-        } else {
-          if (favoritesLength !== undefined && favoritesLength >= 5) {
-            console.warn(`Favorite Limit Reached`);
-          } else {
-            const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
-            const updatedPokemon: Update<PokemonsPage> = {
-              id: pokemon.id,
-              changes: newPokemon
-            }
-            const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
-            const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-            this.store.dispatch(newActionAddingFavorite);
-            this.store.dispatch(newActionChangeFavoriteStatus);
-          }
-        }
-      })
-    ).subscribe()
+   addFavorites(pokemon, this.store);
   }
 
   loadMorePokemons() {

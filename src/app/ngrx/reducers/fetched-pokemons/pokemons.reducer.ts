@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityState } from "@ngrx/entity";
 import { createReducer, on } from "@ngrx/store";
-import { FetchedPokemonsActions } from "../../actions/fetched-pokemons/action-types";
+import * as FetchedPokemonsActions from "../../actions/fetched-pokemons/fetched-pokemons.actions";
 import { Pokemon } from '../../../models/shared/pokemon';
 
 export interface FetchedPokemonsState extends EntityState<Pokemon> {

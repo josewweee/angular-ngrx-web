@@ -5,13 +5,11 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature("favoritePokemons", FavoritePokemonsReducer),
+    StoreModule.forFeature('favoritePokemons', FavoritePokemonsReducer),
     EffectsModule.forFeature([FavoritePokemonsEffects]),
   ]
 })

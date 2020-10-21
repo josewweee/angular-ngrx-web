@@ -28,7 +28,7 @@ export class BannerComponent implements OnInit, OnDestroy {
 
   favoritesLength: number;
 
-  favoritePokemons$: Subscription;
+  favoritePokemons: Subscription;
 
   constructor(private store: Store) {}
 
@@ -38,21 +38,19 @@ export class BannerComponent implements OnInit, OnDestroy {
   }
 
   updateFavoritePokemonsImages() {
-   this.favoritePokemons$ = this.store.pipe(
-    select(selectAllFavoritePokemons),
-      take(1),
-      tap((data) => {
-        this.favoritesLength = data.length;
-        if (this. favoritesLength> 0) {
-          this.images = [];
-          data.map((item) => {
-            this.images.push({ path: item.photo });
-          });
-          return this.images;
-        }
+    this.favoritePokemons = this.store.pipe(
+      select(selectAllFavoritePokemons),
+      take(1)
+    ).subscribe((data) => {
+      this.favoritesLength = data.length;
+      if (this.favoritesLength > 0) {
+        this.images = [];
+        data.map((item) => {
+          this.images.push({ path: item.photo });
+        });
+        return this.images;
       }
-      )
-    ).subscribe();
+    });
   }
 
   initializeDefaultFavoritePokemons() {
@@ -63,6 +61,6 @@ export class BannerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.favoritePokemons$.unsubscribe();
+    this.favoritePokemons.unsubscribe();
   }
 }
