@@ -1,7 +1,8 @@
+import { clearQueryPokemons, queryPokemons } from './../../../ngrx/actions/pokemons-page/pokemons.actions';
 import { concatMap, skipWhile } from 'rxjs/operators';
 import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
 import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
-import { selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
+import { searchPokemons, selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
 import { PokemonsState } from '../../../ngrx/reducers/pokemons-page/pokemons.reducer';
 import { SearchBarEventArgs } from '../../../models/nav-bar/search-bar-event-args';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -68,16 +69,24 @@ export class CardListComponent implements OnInit, OnDestroy {
     );
   }
 
+  loadQueryPokemons() {
+    this.pokemonsPage$ = this.store.pipe(
+      select(searchPokemons),
+      map(pokemons => {
+        return pokemons
+      })
+    );
+  }
+
   filterPokemons(data: SearchBarEventArgs) {
     this.queryParams = data.newValue;
     if (this.queryParams !== '' && this.queryParams !== undefined) {
-      this.pokemonsPage$ = this.store.pipe(
-        select(selectAllPokemons),
-        map((pokemons) =>
-          pokemons.filter((item) => item.name.includes(this.queryParams))
-        )
-      );
+      const newQueryAction = queryPokemons({queryParameters: data});
+      this.store.dispatch(newQueryAction);
+      this.loadQueryPokemons()
     } else {
+      const newClearQueryAction = clearQueryPokemons();
+      this.store.dispatch(newClearQueryAction);
       this.loadStoredPokemons();
     }
   }
