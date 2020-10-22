@@ -45,10 +45,7 @@ export class BannerComponent implements OnInit, OnDestroy {
       this.favoritesLength = data.length;
       if (this.favoritesLength > 0) {
         this.images = [];
-        data.map((item) => {
-          this.images.push({ path: item.photo });
-        });
-        return this.images;
+        this.images = data.map(item => ({path:item.photo}))
       }
     });
   }
