@@ -6,9 +6,9 @@ import { SearchBarEventArgs } from '../../../models/nav-bar/search-bar-event-arg
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map, take, takeUntil, tap } from 'rxjs/operators';
 import { defaultDialogConfig } from '../../../shared/default-dialog-config';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
@@ -46,13 +46,13 @@ export class CardListComponent implements OnInit, OnDestroy {
     this.loadStoredPokemons();
 
     this.apiOffsetSubscription = this.store.pipe(
-      select(selectAllPokemons))
+      select(selectAllPokemons),
+      take(1))
       .subscribe( pokemons => this.pokemonApiOffset = pokemons.length + '')
   }
 
   ngOnDestroy() {
     this.tryToUnsuscribe(this.fetchingToApiSubscription);
-    this.tryToUnsuscribe(this.apiOffsetSubscription);
   }
 
   tryToUnsuscribe(variable: Subscription) {
@@ -82,7 +82,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-   addFavorites(pokemon, this.store);
+    addFavorites(pokemon, this.store);
   }
 
   loadMorePokemons() {
