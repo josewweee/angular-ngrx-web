@@ -3,6 +3,7 @@ import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as CanvasJS from '../../../shared/canvasjs.min.js';
+import { onCloseResponse } from 'src/app/shared/default-dialog-config';
 
 @Component({
   selector: 'app-multiple-card-overview',
@@ -65,7 +66,11 @@ export class MultipleCardOverviewComponent implements OnInit {
   }
 
   onClose() {
-    this.dialogRef.close(null);
+    let response: onCloseResponse = {
+      pokemon: null,
+      favoriteWhileQuery: false
+    }
+    this.dialogRef.close(response);
   }
 
   createchart() {

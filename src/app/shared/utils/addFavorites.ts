@@ -1,4 +1,4 @@
-import { changeFavoriteStatus } from './../../ngrx/actions/pokemons-page/pokemons.actions';
+import { changeFavoriteStatus, changeFavoriteStatusQuery } from './../../ngrx/actions/pokemons-page/pokemons.actions';
 import { first, map, tap } from 'rxjs/operators';
 import { selectAllFavoritePokemons } from './../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
 import { PokemonsPage } from './../../models/shared/pokemons-page';
@@ -8,9 +8,10 @@ import { addFavorite, removeFavorite } from '../../ngrx/actions/favorite-pokemon
 
 export class FavoritesUtils{
 
-  static addFavorites(pokemon: PokemonsPage, store: Store): favoritesAddedResponse {
+  static addFavorites(pokemon: PokemonsPage, store: Store, QueryStatus?: string): favoritesAddedResponse {
     let favoritesLength: number;
     let removingFavorite: boolean = false;
+    let isAQuery: boolean = (QueryStatus !== undefined && QueryStatus !== '')? true: false;
     let response: favoritesAddedResponse = {
       status: null
     };
@@ -37,9 +38,14 @@ export class FavoritesUtils{
         const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
         store.dispatch(newActionRemovingFavorite);
         store.dispatch(newActionChangeFavoriteStatus);
+        /* if(isAQuery){
+          const newActionChangeFavoriteStatusQueryPokemon = changeFavoriteStatusQuery({pokemon: newPokemon})
+          store.dispatch(newActionChangeFavoriteStatusQueryPokemon);
+        } */
       } else {
         if (favoritesLength !== undefined && favoritesLength >= 5) {
           console.warn(`Favorite Limit Reached`);
+          response.status = null;
         } else {
           const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
           const updatedPokemon: Update<PokemonsPage> = {
@@ -51,6 +57,10 @@ export class FavoritesUtils{
           const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
           store.dispatch(newActionAddingFavorite);
           store.dispatch(newActionChangeFavoriteStatus);
+         /*  if(isAQuery){
+            const newActionChangeFavoriteStatusQueryPokemon = changeFavoriteStatusQuery({pokemon: newPokemon})
+            store.dispatch(newActionChangeFavoriteStatusQueryPokemon);
+          } */
         }
       }
     });

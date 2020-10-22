@@ -40,9 +40,19 @@ export const pokemonsReducer = createReducer(
   ),
 
   on(
+    PokemonsActions.changeFavoriteStatusQuery,
+    (state, action) => {
+      const newQueryStatus = {...state.queryPokemons}
+      newQueryStatus[action.pokemon.id] = action.pokemon;
+      console.log(newQueryStatus);
+      return {...state, queryPokemons: newQueryStatus}
+    }
+  ),
+
+  on(
     PokemonsActions.queryPokemons,
     (state, action) => {
-      const queryData = action.queryParameters.newValue;
+      const queryData = action.queryParameters;
       let queriedPokemonsObject = Object
       .assign({}, ...Object
       .entries(state.entities)

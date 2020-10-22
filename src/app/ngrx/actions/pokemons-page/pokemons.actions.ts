@@ -1,4 +1,3 @@
-import { SearchBarEventArgs } from './../../../models/nav-bar/search-bar-event-args';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
@@ -29,9 +28,17 @@ export const changeFavoriteStatus = createAction(
 
 export const queryPokemons = createAction(
   '[card-list] Query Pokemons',
-  props<{queryParameters: SearchBarEventArgs}>()
+  props<{queryParameters: string}>()
+)
+
+export const changeFavoriteStatusQuery = createAction(
+  '[card-list] Changing Favorite Status Query Pokemon',
+  props<{pokemon: PokemonsPage}>()
 )
 
 export const clearQueryPokemons = createAction(
   '[card-list] Clear Pokemons Query'
 )
+
+
+

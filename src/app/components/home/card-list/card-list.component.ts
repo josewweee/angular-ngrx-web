@@ -11,7 +11,7 @@ import { Pokemon } from '../../../models/shared/pokemon';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { first, map, switchMap, take, takeUntil, tap, filter } from 'rxjs/operators';
-import { defaultDialogConfig } from '../../../shared/default-dialog-config';
+import { defaultDialogConfig, onCloseResponse } from '../../../shared/default-dialog-config';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';
@@ -82,7 +82,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   filterPokemons(data: SearchBarEventArgs) {
     this.queryParams = data.newValue;
     if (this.queryParams !== '' && this.queryParams !== undefined) {
-      const newQueryAction = queryPokemons({queryParameters: data});
+      const newQueryAction = queryPokemons({queryParameters: this.queryParams});
       this.store.dispatch(newQueryAction);
       this.loadQueryPokemons()
     } else {
@@ -93,7 +93,12 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    FavoritesUtils.addFavorites(pokemon, this.store);
+    FavoritesUtils.addFavorites(pokemon, this.store, this.queryParams);
+    if(this.queryParams !== undefined && this.queryParams !== ''){
+      const newQueryAction = queryPokemons({queryParameters: this.queryParams});
+      this.store.dispatch(newQueryAction);
+      this.loadQueryPokemons()
+    }
   }
 
   loadMorePokemons() {
@@ -166,12 +171,18 @@ export class CardListComponent implements OnInit, OnDestroy {
       first()
     )
     .subscribe(
-      (data: Pokemon) => {
-        if (data !== null) {
-          this.pokemonBeforeComparing = data;
+      (data: onCloseResponse) => {
+        if (data.pokemon !== null) {
+          this.pokemonBeforeComparing = data.pokemon;
           this.isComparing = true;
         } else {
           this.isComparing = false;
+        }
+
+        if(data.favoriteWhileQuery == true){
+          const newQueryAction = queryPokemons({queryParameters: this.queryParams});
+          this.store.dispatch(newQueryAction);
+          this.loadQueryPokemons()
         }
       }
     );

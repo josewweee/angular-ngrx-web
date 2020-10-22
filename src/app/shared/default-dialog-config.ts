@@ -1,4 +1,5 @@
 import { MatDialogConfig } from '@angular/material/dialog';
+import { Pokemon } from '../models/shared/pokemon';
 
 export function defaultDialogConfig() {
   const dialogConfig = new MatDialogConfig();
@@ -12,3 +13,9 @@ export function defaultDialogConfig() {
 
   return dialogConfig;
 }
+
+export interface onCloseResponse{
+  pokemon: Pokemon,
+  favoriteWhileQuery: boolean
+}
+

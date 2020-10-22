@@ -1,10 +1,13 @@
+import { first } from 'rxjs/operators';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as CanvasJS from '../../../shared/canvasjs.min.js';
 import { FavoritesUtils } from 'src/app/shared/utils/addFavorites';
+import { searchPokemons } from 'src/app/ngrx/selectors/pokemons-page/pokemons.selector';
+import { onCloseResponse } from 'src/app/shared/default-dialog-config';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -19,6 +22,7 @@ export class SingleCardOverviewComponent implements OnInit {
   title: string;
   chartHeight: string;
   graph: CanvasJS;
+  addedFavoriteWhileInQuery: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<SingleCardOverviewComponent>,
@@ -48,13 +52,18 @@ export class SingleCardOverviewComponent implements OnInit {
   }
 
   onClose(data: Pokemon) {
+    let pokemon: Pokemon
     if (data !== null) {
-      let pokemon = { ...data };
+      pokemon = { ...data };
       pokemon.photo = this.pokemonImage;
-      this.dialogRef.close(pokemon);
     } else {
-      this.dialogRef.close(null);
+      pokemon = null
     }
+    const returnInfo: onCloseResponse = {
+      pokemon,
+      favoriteWhileQuery: this.addedFavoriteWhileInQuery
+    }
+    this.dialogRef.close(returnInfo);
   }
 
   createchart() {
@@ -88,5 +97,14 @@ export class SingleCardOverviewComponent implements OnInit {
 
   addToFavorites(pokemon: PokemonsPage) {
     this.favoriteStatus = FavoritesUtils.addFavorites(pokemon, this.store).status;
+    this.store.pipe(
+      select(searchPokemons),
+      first()
+    )
+    .subscribe(queryPokemons => {
+      if(queryPokemons.length > 0){
+        this.addedFavoriteWhileInQuery = true;
+      }
+    })
   }
 }
