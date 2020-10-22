@@ -1,16 +1,18 @@
 import { select, Store } from '@ngrx/store';
 import { allPokemonsLoaded, nextPageLoaded } from '../../actions/pokemons-page/pokemons.actions';
 import { PokemonService } from '../../../services/pokemons.service';
-import { first, map, tap } from "rxjs/operators";
+import { first, map, switchMap, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as PokemonsActions from "../../actions/pokemons-page/pokemons.actions";
 import { concatMap } from "rxjs/operators";
 import { arePokemonsLoaded } from '../../selectors/pokemons-page/pokemons.selector';
 import { PokemonsPage } from 'src/app/models/shared/pokemons-page';
+import { EMPTY } from 'rxjs';
 
 @Injectable()
 export class PokemonsEffects {
+
   loadPokemons$ = createEffect(
     () =>
      this.actions$.pipe(
@@ -19,17 +21,23 @@ export class PokemonsEffects {
         ()=> {
           this.store.pipe(
             select(arePokemonsLoaded),
-            first()
+            first(),
+            switchMap((pokemonsLoaded) => {
+              if (!pokemonsLoaded) {
+                return this.pokemonService.getAll()
+                .pipe(
+                  first()
+                )
+              }
+              else
+              {
+                return EMPTY
+              }
+            })
           )
-          .subscribe((pokemonsLoaded) => {
-            if (!pokemonsLoaded) {
-              this.pokemonService.getAll().pipe(
-                first(),
-              ).subscribe((pokemons: PokemonsPage[]) => {
-               this.store.dispatch(allPokemonsLoaded({ pokemons }))
-              })
-            }
-          })
+          .subscribe((pokemons: PokemonsPage[]) => {
+            this.store.dispatch(allPokemonsLoaded({ pokemons }))
+           })
         }
       )
     ),

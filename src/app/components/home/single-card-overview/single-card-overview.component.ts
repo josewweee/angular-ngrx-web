@@ -4,7 +4,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import * as CanvasJS from '../../../shared/canvasjs.min.js';
-import { addFavorites } from 'src/app/shared/utils/addFavorites';
+import { FavoritesUtils } from 'src/app/shared/utils/addFavorites';
 
 @Component({
   selector: 'app-single-card-overview',
@@ -87,6 +87,6 @@ export class SingleCardOverviewComponent implements OnInit {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    this.favoriteStatus = addFavorites(pokemon, this.store).status;
+    this.favoriteStatus = FavoritesUtils.addFavorites(pokemon, this.store).status;
   }
 }

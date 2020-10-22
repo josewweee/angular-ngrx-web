@@ -1,4 +1,4 @@
-import { concatMap, filter, skipWhile } from 'rxjs/operators';
+import { concatMap, skipWhile } from 'rxjs/operators';
 import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
 import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
 import { selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
@@ -17,7 +17,7 @@ import { MultipleCardOverviewComponent } from '../multiple-card-overview/multipl
 import { ComponentType } from '@angular/cdk/portal';
 import { select, Store } from '@ngrx/store';
 import { loadNextPokemonPage } from 'src/app/ngrx/actions/pokemons-page/pokemons.actions';
-import { addFavorites } from '../../../shared/utils/addFavorites';
+import { FavoritesUtils } from '../../../shared/utils/addFavorites';
 
 @Component({
   selector: 'app-card-list',
@@ -83,7 +83,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   }
 
   addToFavorites(pokemon: PokemonsPage) {
-    addFavorites(pokemon, this.store);
+    FavoritesUtils.addFavorites(pokemon, this.store);
   }
 
   loadMorePokemons() {
