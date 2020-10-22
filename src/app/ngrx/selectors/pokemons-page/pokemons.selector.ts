@@ -1,10 +1,10 @@
 import { PokemonsPage } from 'src/app/models/shared/pokemons-page';
 import { adapterSelectors, PokemonsState } from '../../reducers/pokemons-page/pokemons.reducer';
-import { createSelector } from "@ngrx/store";
-import { createFeatureSelector } from "@ngrx/store";
+import { createSelector } from '@ngrx/store';
+import { createFeatureSelector } from '@ngrx/store';
 
 export const selectPokemonsState = createFeatureSelector<PokemonsState>(
-  "pokemons"
+  'pokemons'
 );
 
 export const selectAllPokemons = createSelector(

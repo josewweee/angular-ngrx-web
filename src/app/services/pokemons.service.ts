@@ -1,5 +1,5 @@
 import { Pokemon } from './../models/shared/pokemon';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { PokemonsPage } from '../models/shared/pokemons-page';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

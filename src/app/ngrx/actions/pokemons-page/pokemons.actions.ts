@@ -1,37 +1,37 @@
 import { SearchBarEventArgs } from './../../../models/nav-bar/search-bar-event-args';
 import { PokemonsPage } from '../../../models/shared/pokemons-page';
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 export const loadAllPokemons = createAction(
-  "[Pokemons Resolver] Load All Pokemons"
+  '[Pokemons Resolver] Load All Pokemons'
 );
 
 export const allPokemonsLoaded = createAction(
-  "[Load Pokemons Effect] All Pokemons Loaded",
+  '[Load Pokemons Effect] All Pokemons Loaded',
   props<{ pokemons: PokemonsPage[] }>()
 );
 
 export const loadNextPokemonPage = createAction(
-  "[Card-list] Load Next Pokemon Page",
+  '[Card-list] Load Next Pokemon Page',
   props<{offset: string}>()
 )
 
 export const nextPageLoaded = createAction(
-  "[Card-list] Next Pokemon Page Loaded",
+  '[Card-list] Next Pokemon Page Loaded',
   props<{pokemons: PokemonsPage[]}>()
 )
 
 export const changeFavoriteStatus = createAction(
-  "[card-list] Changing Favorite Status",
+  '[card-list] Changing Favorite Status',
   props<{update: Update<PokemonsPage>}>()
 )
 
 export const queryPokemons = createAction(
-  "[card-list] Query Pokemons",
+  '[card-list] Query Pokemons',
   props<{queryParameters: SearchBarEventArgs}>()
 )
 
 export const clearQueryPokemons = createAction(
-  "[card-list] Clear Pokemons Query"
+  '[card-list] Clear Pokemons Query'
 )

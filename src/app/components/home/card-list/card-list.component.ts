@@ -1,6 +1,6 @@
 import { clearQueryPokemons, queryPokemons } from './../../../ngrx/actions/pokemons-page/pokemons.actions';
 import { concatMap, skipWhile } from 'rxjs/operators';
-import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
+import { fetchingInProcess, selectAllFetchedPokemons } from '../../../ngrx/selectors/fetched-pokemons/fetched-pokemons.selector';
 import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
 import { searchPokemons, selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
 import { PokemonsState } from '../../../ngrx/reducers/pokemons-page/pokemons.reducer';
@@ -30,6 +30,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   isComparing: boolean = false;
   pokemonBeforeComparing: Pokemon;
   pokemonApiOffset: string = '20';
+  apiOffSetIncrease: number = 20;
   queryParams: string = '';
 
   fetchingToApiSubscription: Subscription;
@@ -98,7 +99,7 @@ export class CardListComponent implements OnInit, OnDestroy {
   loadMorePokemons() {
     const newLoadPageAction = loadNextPokemonPage({ offset: this.pokemonApiOffset });
     this.store.dispatch(newLoadPageAction)
-    let nextOffsetInt = parseInt(this.pokemonApiOffset) + 20;
+    let nextOffsetInt = parseInt(this.pokemonApiOffset) + this.apiOffSetIncrease;
     this.pokemonApiOffset = nextOffsetInt.toFixed(0);
   }
 

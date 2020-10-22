@@ -1,10 +1,10 @@
-import { selectAllFetchedPokemons } from './../../selectors/fetched-pokemons/pokemons.selector';
-import { pokemonFetched } from './../../actions/fetched-pokemons/fetched-pokemons.actions';
-import { PokemonService } from './../../../services/pokemons.service';
-import { first, switchMap, tap } from "rxjs/operators";
-import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import * as FetchedPokemonsActions from "../../actions/fetched-pokemons/fetched-pokemons.actions";
+import { selectAllFetchedPokemons } from '../../selectors/fetched-pokemons/fetched-pokemons.selector';
+import { pokemonFetched } from '../../actions/fetched-pokemons/fetched-pokemons.actions';
+import { PokemonService } from '../../../services/pokemons.service';
+import { first, switchMap, tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import * as FetchedPokemonsActions from '../../actions/fetched-pokemons/fetched-pokemons.actions';
 import { select, Store } from '@ngrx/store';
 import { Pokemon } from 'src/app/models/shared/pokemon';
 import { EMPTY } from 'rxjs';
@@ -28,9 +28,7 @@ fetchPokemon$ = createEffect(
             {
               this.store.dispatch(pokemonFetched({ pokemon: data }))
               return EMPTY
-            }
-            else
-            {
+            } else {
               return this.pokemonService.getById(action.pokemon.url)
               .pipe(
                 first()
