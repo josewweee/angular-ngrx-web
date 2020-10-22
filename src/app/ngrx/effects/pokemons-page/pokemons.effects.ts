@@ -17,29 +17,26 @@ export class PokemonsEffects {
     () =>
      this.actions$.pipe(
       ofType(PokemonsActions.loadAllPokemons),
-      tap(
+      switchMap(
         ()=> {
-          this.store.pipe(
+          return this.store.pipe(
             select(arePokemonsLoaded),
             first(),
             switchMap((pokemonsLoaded) => {
               if (!pokemonsLoaded) {
                 return this.pokemonService.getAll()
                 .pipe(
-                  first()
+                  first(),
+                  map((pokemons: PokemonsPage[]) => allPokemonsLoaded({ pokemons }))
                 )
               } else {
                 return EMPTY
               }
             })
           )
-          .subscribe((pokemons: PokemonsPage[]) => {
-            this.store.dispatch(allPokemonsLoaded({ pokemons }))
-           })
         }
       )
-    ),
-    { dispatch: false}
+    )
   )
 
   loadNextPage$ = createEffect( ()=> {
