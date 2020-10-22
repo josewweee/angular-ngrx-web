@@ -22,37 +22,36 @@ export function addFavorites(pokemon: PokemonsPage, store: Store): favoritesAdde
       if(favorites.some((item) => item.name === pokemon.name)) {
         removingFavorite = true;
       }
-    }),
-    tap(() => {
-      if (removingFavorite) {
-        const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };
+    })
+  ).subscribe(() => {
+    if (removingFavorite) {
+      const newPokemon: PokemonsPage = { ...pokemon, isFavorite: false };
+      const updatedPokemon: Update<PokemonsPage> = {
+        id: pokemon.id,
+        changes: newPokemon
+      }
+      response.status = false;
+      const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
+      const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
+      store.dispatch(newActionRemovingFavorite);
+      store.dispatch(newActionChangeFavoriteStatus);
+    } else {
+      if (favoritesLength !== undefined && favoritesLength >= 5) {
+        console.warn(`Favorite Limit Reached`);
+      } else {
+        const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
         const updatedPokemon: Update<PokemonsPage> = {
           id: pokemon.id,
           changes: newPokemon
         }
-        response.status = false;
-        const newActionRemovingFavorite = removeFavorite({pokemon: newPokemon})
+        response.status = true;
+        const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
         const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-        store.dispatch(newActionRemovingFavorite);
+        store.dispatch(newActionAddingFavorite);
         store.dispatch(newActionChangeFavoriteStatus);
-      } else {
-        if (favoritesLength !== undefined && favoritesLength >= 5) {
-          console.warn(`Favorite Limit Reached`);
-        } else {
-          const newPokemon: PokemonsPage = { ...pokemon, isFavorite: true };
-          const updatedPokemon: Update<PokemonsPage> = {
-            id: pokemon.id,
-            changes: newPokemon
-          }
-          response.status = true;
-          const newActionAddingFavorite = addFavorite({pokemon: newPokemon})
-          const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
-          store.dispatch(newActionAddingFavorite);
-          store.dispatch(newActionChangeFavoriteStatus);
-        }
       }
-    })
-  ).subscribe();
+    }
+  });
   return response;
 }
 

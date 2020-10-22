@@ -151,16 +151,17 @@ export class CardListComponent implements OnInit, OnDestroy {
     .open(component, dialogConfig)
     .afterClosed()
     .pipe(
-      first(),
-      tap((data: Pokemon) => {
+      first()
+    )
+    .subscribe(
+      (data: Pokemon) => {
         if (data !== null) {
           this.pokemonBeforeComparing = data;
           this.isComparing = true;
         } else {
           this.isComparing = false;
         }
-      }),
-    )
-    .subscribe();
+      }
+    );
   }
 }
