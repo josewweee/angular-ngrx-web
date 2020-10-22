@@ -1,3 +1,4 @@
+import { concatMap, filter, skipWhile } from 'rxjs/operators';
 import { fetchingInProcess, selectAllFetchedPokemons } from './../../../ngrx/selectors/fetched-pokemons/pokemons.selector';
 import { fetchPokemon } from './../../../ngrx/actions/fetched-pokemons/fetched-pokemons.actions';
 import { selectAllPokemons } from './../../../ngrx/selectors/pokemons-page/pokemons.selector';
@@ -8,7 +9,7 @@ import { PokemonsPage } from '../../../models/shared/pokemons-page';
 import { Pokemon } from '../../../models/shared/pokemon';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { first, map, take, takeUntil, tap } from 'rxjs/operators';
+import { first, map, switchMap, take, takeUntil, tap, filter } from 'rxjs/operators';
 import { defaultDialogConfig } from '../../../shared/default-dialog-config';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
@@ -101,40 +102,41 @@ export class CardListComponent implements OnInit, OnDestroy {
 
     this.fetchingToApiSubscription = this.store.pipe(
       select(fetchingInProcess),
-    ).subscribe(
-      isFetching => {
-        if(!processCompleted)
-        {
-          if(isFetching === false)
+      switchMap(
+        isFetching => {
+          if(!processCompleted)
           {
-            this.loader.stop();
-            this.fetchingToApiSubscription.unsubscribe();
-            processCompleted = true;
-            this.store.pipe(
+            if(isFetching === true)
+            {
+              this.loader.start()
+            }
+            return this.store.pipe(
+              skipWhile(() => isFetching === true),
               select(selectAllFetchedPokemons),
-              first()
-            )
-            .subscribe(pokemons => {
-              requestedPokemon = pokemons.find(item => item.name === pokemon.name);
-              if (this.isComparing) {
-                dialogConfig.data = {
-                  pokemon1: this.pokemonBeforeComparing,
-                  pokemon2: { ...requestedPokemon, photo: pokemon.photo },
-                };
-                this.createDialog(MultipleCardOverviewComponent, dialogConfig);
-              } else {
-                dialogConfig.data = {
-                  pokemonPageInfo: pokemon,
-                  pokemon: requestedPokemon,
-                };
-                this.createDialog(SingleCardOverviewComponent, dialogConfig);
-              }
-            })
+              tap( ()=> {
+                this.loader.stop();
+                processCompleted = true;
+              }),
+            );
           } else {
-            this.loader.start();
+            this.fetchingToApiSubscription.unsubscribe();
           }
+        }
+      ))
+      .subscribe(pokemons => {
+        requestedPokemon = pokemons.find(item => item.name === pokemon.name);
+        if (this.isComparing) {
+          dialogConfig.data = {
+            pokemon1: this.pokemonBeforeComparing,
+            pokemon2: { ...requestedPokemon, photo: pokemon.photo },
+          };
+          this.createDialog(MultipleCardOverviewComponent, dialogConfig);
         } else {
-          this.fetchingToApiSubscription.unsubscribe();
+          dialogConfig.data = {
+            pokemonPageInfo: pokemon,
+            pokemon: requestedPokemon,
+          };
+          this.createDialog(SingleCardOverviewComponent, dialogConfig);
         }
       }
     )
