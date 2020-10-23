@@ -39,6 +39,3 @@ export const changeFavoriteStatusQuery = createAction(
 export const clearQueryPokemons = createAction(
   '[card-list] Clear Pokemons Query'
 )
-
-
-

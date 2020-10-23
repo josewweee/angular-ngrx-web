@@ -102,7 +102,7 @@ export class SingleCardOverviewComponent implements OnInit {
       first()
     )
     .subscribe(queryPokemons => {
-      if(queryPokemons.length > 0){
+      if (queryPokemons.length > 0) {
         this.addedFavoriteWhileInQuery = true;
       }
     })

@@ -94,7 +94,7 @@ export class CardListComponent implements OnInit, OnDestroy {
 
   addToFavorites(pokemon: PokemonsPage) {
     FavoritesUtils.addFavorites(pokemon, this.store, this.queryParams);
-    if(this.queryParams !== undefined && this.queryParams !== ''){
+    if (this.queryParams !== undefined && this.queryParams !== '') {
       const newQueryAction = queryPokemons({queryParameters: this.queryParams});
       this.store.dispatch(newQueryAction);
       this.loadQueryPokemons()
@@ -119,10 +119,8 @@ export class CardListComponent implements OnInit, OnDestroy {
       select(fetchingInProcess),
       switchMap(
         isFetching => {
-          if(!processCompleted)
-          {
-            if(isFetching === true)
-            {
+          if (!processCompleted) {
+            if (isFetching === true) {
               this.loader.start()
             }
             return this.store.pipe(
@@ -179,7 +177,7 @@ export class CardListComponent implements OnInit, OnDestroy {
           this.isComparing = false;
         }
 
-        if(data.favoriteWhileQuery == true){
+        if (data.favoriteWhileQuery == true) {
           const newQueryAction = queryPokemons({queryParameters: this.queryParams});
           this.store.dispatch(newQueryAction);
           this.loadQueryPokemons()
