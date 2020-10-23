@@ -11,7 +11,7 @@ import { Pokemon } from '../../../models/shared/pokemon';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { first, map, switchMap, take, takeUntil, tap, filter } from 'rxjs/operators';
-import { defaultDialogConfig, onCloseResponse } from '../../../shared/default-dialog-config';
+import { defaultDialogConfig, onCloseResponse } from '../../../shared/utils/default-dialog-config';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleCardOverviewComponent } from '../single-card-overview/single-card-overview.component';
 import { MultipleCardOverviewComponent } from '../multiple-card-overview/multiple-card-overview.component';

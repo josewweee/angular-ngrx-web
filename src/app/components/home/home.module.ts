@@ -41,8 +41,6 @@ import { EffectsModule } from '@ngrx/effects';
     MatGridListModule,
     InfiniteScrollModule,
     NgxUiLoaderModule,
-    StoreModule.forFeature('pokemons', pokemonsReducer),
-    EffectsModule.forFeature([PokemonsEffects]),
   ],
   exports: [
     CommonModule,

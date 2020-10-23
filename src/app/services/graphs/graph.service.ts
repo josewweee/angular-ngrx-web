@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as CanvasJS from '../../shared/canvasjs.min.js';
+import * as CanvasJS from '../../shared/lib/canvasjs.min.js';
 
 @Injectable({
   providedIn: 'root',

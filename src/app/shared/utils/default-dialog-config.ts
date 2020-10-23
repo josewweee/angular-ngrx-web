@@ -1,5 +1,5 @@
 import { MatDialogConfig } from '@angular/material/dialog';
-import { Pokemon } from '../models/shared/pokemon';
+import { Pokemon } from '../../models/shared/pokemon';
 
 export function defaultDialogConfig() {
   const dialogConfig = new MatDialogConfig();

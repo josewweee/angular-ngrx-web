@@ -4,10 +4,10 @@ import { Pokemon } from '../../../models/shared/pokemon';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import * as CanvasJS from '../../../shared/canvasjs.min.js';
+import * as CanvasJS from '../../../shared/lib/canvasjs.min.js';
 import { FavoritesUtils } from 'src/app/shared/utils/addFavorites';
 import { searchPokemons } from 'src/app/ngrx/selectors/pokemons-page/pokemons.selector';
-import { onCloseResponse } from 'src/app/shared/default-dialog-config';
+import { onCloseResponse } from 'src/app/shared/utils/default-dialog-config';
 
 @Component({
   selector: 'app-single-card-overview',

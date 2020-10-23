@@ -1,6 +1,6 @@
 import { select, Store } from '@ngrx/store';
 import { allPokemonsLoaded, nextPageLoaded } from '../../actions/pokemons-page/pokemons.actions';
-import { PokemonService } from '../../../services/pokemons.service';
+import { PokemonService } from '../../../services/pokemons-http/pokemons.service';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';

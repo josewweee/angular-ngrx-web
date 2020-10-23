@@ -1,3 +1,4 @@
+import { PokemonsModule } from './core/entities-modules/pokemons.module';
 import { FavoritePokemonsModule } from './core/entities-modules/favorite-pokemons.module';
 import { FetchedPokemonsModule } from './core/entities-modules/fetched-pokemons.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,6 +38,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
     HomeModule,
     FetchedPokemonsModule,
     FavoritePokemonsModule,
+    PokemonsModule,
     CoreModule,
     IvyCarouselModule,
   ],

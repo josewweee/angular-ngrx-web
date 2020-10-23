@@ -1,5 +1,5 @@
 import { selectAllFavoritePokemons } from './../../ngrx/selectors/favorite-pokemons/favorite-pokemons.selector';
-import { imagesPath } from './../../models/banner/imagesPath';
+import { imagesPath } from '../../models/banner/images-path';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from './../../../environments/environment';
 import { initialValues } from './banner.constants';

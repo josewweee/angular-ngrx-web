@@ -1,6 +1,6 @@
+import { FetchedPokemonsHttp } from './../../../services/fetched-pokemons-http/fetched-pokemons-http.service';
 import { selectAllFetchedPokemons } from '../../selectors/fetched-pokemons/fetched-pokemons.selector';
 import { pokemonFetched } from '../../actions/fetched-pokemons/fetched-pokemons.actions';
-import { PokemonService } from '../../../services/pokemons.service';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -38,7 +38,7 @@ export class FetchedPokemonsEffects {
 
  constructor(
     private actions$: Actions,
-    private pokemonService: PokemonService,
+    private pokemonService: FetchedPokemonsHttp,
     private store: Store
   ) {}
 }
