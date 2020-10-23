@@ -22,7 +22,7 @@ export class FavoritesUtils{
       map( (favorites: PokemonsPage[]) => {
         favoritesLength = favorites.length;
 
-        if(favorites.some((item) => item.name === pokemon.name)) {
+        if (favorites.some((item) => item.name === pokemon.name)) {
           removingFavorite = true;
         }
       })
@@ -38,10 +38,6 @@ export class FavoritesUtils{
         const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
         store.dispatch(newActionRemovingFavorite);
         store.dispatch(newActionChangeFavoriteStatus);
-        /* if(isAQuery){
-          const newActionChangeFavoriteStatusQueryPokemon = changeFavoriteStatusQuery({pokemon: newPokemon})
-          store.dispatch(newActionChangeFavoriteStatusQueryPokemon);
-        } */
       } else {
         if (favoritesLength !== undefined && favoritesLength >= 5) {
           console.warn(`Favorite Limit Reached`);
@@ -57,10 +53,6 @@ export class FavoritesUtils{
           const newActionChangeFavoriteStatus = changeFavoriteStatus({update: updatedPokemon})
           store.dispatch(newActionAddingFavorite);
           store.dispatch(newActionChangeFavoriteStatus);
-         /*  if(isAQuery){
-            const newActionChangeFavoriteStatusQueryPokemon = changeFavoriteStatusQuery({pokemon: newPokemon})
-            store.dispatch(newActionChangeFavoriteStatusQueryPokemon);
-          } */
         }
       }
     });
