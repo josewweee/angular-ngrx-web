@@ -1,0 +1,73 @@
+@import "../../../../colors.scss";
+@import "../../../../variables.scss";
+
+.mat-dialog {
+  overflow: hidden;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+
+  .mat-dialog-actions {
+    padding: 0;
+    margin-bottom: 1rem;
+
+    .dialog-header-btn {
+      top: 0;
+      margin-bottom: 100%;
+    }
+  }
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.body-img {
+  max-height: 200px;
+
+  .body-img-item {
+    max-width: $lg-width;
+
+    @media (max-width: 768px) {
+      max-width: $md-width;
+    }
+    @media (max-width: 375px) {
+      max-width: $sm-width;
+    }
+  }
+}
+
+.info-details {
+  .mat-grid-tile .mat-grid-tile-header {
+    display: block;
+    text-align: center;
+    font-weight: 900;
+    color: $black;
+    background: none;
+  }
+
+  .info-details-list {
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.dialog-footer {
+  height: 100%;
+
+  .chart-container {
+    height: 300px;
+    width: 100%;
+
+    .chart {
+      margin: auto;
+      max-width: 680px;
+      height: inherit;
+      width: 100%;
+    }
+  }
+}

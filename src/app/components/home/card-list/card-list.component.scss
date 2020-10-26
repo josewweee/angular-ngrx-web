@@ -1,0 +1,73 @@
+@import "../../../../colors.scss";
+
+.container {
+  padding: 5rem 0;
+}
+
+.card-container {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  padding: 0 5rem;
+}
+
+.mat-card {
+  width: 150px;
+  border: 2px solid $card-border;
+  box-shadow: none;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+}
+
+.mat-card-actions {
+  position: absolute;
+  right: 10%;
+  top: 0%;
+}
+
+.mat-card-footer {
+  display: block;
+  background-color: $card-footer;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.1rem;
+  border-top: 2px solid $card-border;
+}
+
+.comparing-alert {
+  position: fixed;
+  right: 0;
+  z-index: 1;
+  visibility: hidden;
+  transition: display 3s linear;
+
+  .comparing-alert-item {
+    margin-right: 5px;
+    padding: 0;
+    width: fit-content;
+  }
+}
+
+.visible {
+  visibility: visible;
+}
+
+.comparing-alert-header {
+  display: block;
+  padding: 0.5rem 0.8rem;
+  padding-bottom: 0.3rem;
+  color: $grey;
+  font-weight: 900;
+}
+
+.comparing-alert-separation {
+  width: 100%;
+  margin: 0;
+}
+
+.comparing-alert-body {
+  display: block;
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  font-weight: 900;
+}

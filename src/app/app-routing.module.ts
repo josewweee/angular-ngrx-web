@@ -1,10 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BannerComponent } from './components/banner/banner.component';
+import { CardListComponent } from './components/home/card-list/card-list.component';
+import { PokemonsResolver } from './ngrx/resolvers/pokemons.resolver';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'banner',
+    component: BannerComponent,
+  },
+  {
+    path: '',
+    redirectTo: '/banner',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: CardListComponent,
+    resolve: {
+      pokemons: PokemonsResolver,
+    },
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,0 +1,73 @@
+@import "../../../colors.scss";
+@import "../../../variables.scss";
+
+.full-page {
+  width: 100%;
+  height: 100%;
+  background: url("../../../assets/banner/banner-whale.jpg") center/cover;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, $dark-blue, $black);
+    opacity: 0.6;
+  }
+}
+
+.banner-title {
+  color: $white;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  margin-top: 20vh;
+  font-size: $big;
+  font-weight: 900;
+}
+
+.banner-subtitle {
+  color: $white;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  margin-top: 35vh;
+  font-size: $medium;
+  font-weight: 900;
+}
+
+.full-page .carousel {
+  position: absolute;
+  margin-top: 40vh;
+  background-color: $dark-green;
+}
+
+.nav-bar {
+  position: absolute;
+  bottom: 0;
+  color: $white;
+  font-size: $medium;
+  background-color: $dark-grey;
+  width: 100%;
+}
+
+.nav-bar .nav-bar-list {
+  list-style: none;
+  display: flex;
+  padding-left: 1rem;
+}
+
+.nav-bar-list-item {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.nav-bar-list-item:focus {
+  outline: none;
+}
+
+.active {
+  color: $light-grey;
+}

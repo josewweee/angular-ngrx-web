@@ -1,0 +1,61 @@
+@import "../../../../colors.scss";
+
+.nav-bar {
+  padding: 0 0.625rem;
+  justify-content: space-between;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+}
+
+.nav-bar .nav-bar-list {
+  list-style: none;
+  display: flex;
+  padding-left: 1rem;
+}
+
+.nav-bar-list-item {
+  margin-right: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.nav-bar-list-item:focus {
+  outline: none;
+}
+
+.active {
+  font-weight: 900;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid $search-box;
+  border-radius: 4px;
+  background: $white;
+  height: 1.5rem;
+  padding: 0.063rem;
+}
+
+.nav-bar-input {
+  border: none;
+  width: 100%;
+}
+
+.search-container:focus {
+  outline: 2px solid $search-box-focus;
+}
+
+.nav-bar-input:focus {
+  outline: none;
+}
+
+.search-btn {
+  align-self: center;
+  visibility: hidden;
+}
+
+.display-item {
+  visibility: visible;
+}

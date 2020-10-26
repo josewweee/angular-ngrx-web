@@ -1,0 +1,41 @@
+<app-nav-bar (searching)="filterPokemons($event)"></app-nav-bar>
+<ngx-ui-loader></ngx-ui-loader>
+
+<div class="container">
+  <div class="comparing-alert">
+    <mat-card
+      class="comparing-alert-item"
+      [class.visible]="isComparing == true"
+    >
+      <span class="comparing-alert-header">Comparing pokemon</span>
+      <hr class="comparing-alert-separation" />
+      <span class="comparing-alert-body" *ngIf="isComparing == true">
+        {{pokemonBeforeComparing.name}}
+      </span>
+    </mat-card>
+  </div>
+
+  <div class="card-container">
+    <mat-card *ngFor="let pokemon of pokemonsPage$ | async">
+      <mat-card-actions>
+        <button mat-icon-button color="warn" (click)="addToFavorites(pokemon)">
+          <mat-icon *ngIf="!pokemon.isFavorite">favorite_border</mat-icon>
+          <mat-icon *ngIf="pokemon.isFavorite">favorite</mat-icon>
+        </button>
+      </mat-card-actions>
+      <div (click)="openPokemonDialog(pokemon)">
+        <img mat-card-image [src]="pokemon.photo" />
+        <mat-card-footer>{{ pokemon.name }}</mat-card-footer>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  [fromRoot]="true"
+  (scrolled)="loadMorePokemons()"
+></div>
